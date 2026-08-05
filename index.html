@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- favicon: same "OE" mark as the header logo, inlined as SVG -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231C6E7E'/%3E%3Cstop offset='1' stop-color='%23022B3A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Verdana,DejaVu Sans,sans-serif' font-size='26' font-weight='700' fill='%23ffffff'%3EOE%3C/text%3E%3C/svg%3E">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const IC = 'https://api.iconify.design/';
+const ic = (name, color) => IC + name.replace(':', '/') + '.svg?height=256' + (color ? '&color=%23' + color.replace('#', '') : '');
+const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+
+/* Distinct category hues, desaturated to sit with the navy/teal palette. */
+const CATS = [
+  { key: 'cat_lang',  hex: '#1C6E7E', rgb: [28, 110, 126] },
+  { key: 'cat_db',    hex: '#2E5FA3', rgb: [46, 95, 163] },
+  { key: 'cat_web',   hex: '#5B4B9E', rgb: [91, 75, 158] },
+  { key: 'cat_bi',    hex: '#B26B12', rgb: [178, 107, 18] },
+  { key: 'cat_cloud', hex: '#A63A55', rgb: [166, 58, 85] }
+];
+
+const rgba = (c, a) => 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+
+const SKILLS = [
+  { n: 'Python',        c: 0, u: ic('logos:python') },
+  { n: 'pandas',        c: 0, u: ic('logos:pandas-icon'), du: ic('simple-icons:pandas', '#E1E5F2') },
+  { n: 'NumPy',         c: 0, u: ic('logos:numpy') },
+  { n: 'SQL',           c: 0, u: ic('vscode-icons:file-type-sql') },
+  { n: 'Java',          c: 0, u: ic('logos:java') },
+  { n: 'PHP',           c: 0, u: ic('logos:php'), wide: true },
+  { n: 'JavaScript',    c: 0, u: ic('logos:javascript') },
+
+  { n: 'SQL Server',    c: 1, u: ic('devicon:microsoftsqlserver') },
+  { n: 'MySQL',         c: 1, u: ic('logos:mysql-icon') },
+  { n: 'PostgreSQL',    c: 1, u: ic('logos:postgresql') },
+  { n: 'MongoDB',       c: 1, u: ic('logos:mongodb-icon') },
+  { n: 'Oracle',        c: 1, u: ic('simple-icons:oracle', '#C74634') },
+
+  { n: 'HTML',          c: 2, u: ic('logos:html-5') },
+  { n: 'CSS',           c: 2, u: ic('logos:css-3') },
+  { n: 'React',         c: 2, u: ic('logos:react') },
+  { n: 'Node.js',       c: 2, u: ic('logos:nodejs-icon') },
+  { n: 'Flask',         c: 2, u: ic('logos:flask'), du: ic('simple-icons:flask', '#E1E5F2') },
+  { n: 'Laravel',       c: 2, u: ic('logos:laravel') },
+  { n: 'Symfony',       c: 2, u: ic('logos:symfony'), du: ic('simple-icons:symfony', '#E1E5F2') },
+
+  { n: 'Power BI',      c: 3, u: ic('logos:microsoft-power-bi') },
+  { n: 'Power Query',   c: 3, m: 'PQ', mc: '#F2C811', dark: true },
+  { n: 'Excel (VBA)',   c: 3, u: ic('vscode-icons:file-type-excel') },
+  { n: 'Tableau',       c: 3, u: ic('simple-icons:tableau', '#E97627') },
+
+  { n: 'AWS',           c: 4, u: ic('logos:aws'), du: ic('mdi:aws', '#E1E5F2'), wide: true },
+  { n: 'Google Cloud',  c: 4, u: ic('logos:google-cloud'), wide: true }
+];
+
+const S = 256;
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+/* Raw logo on a transparent tile — no disc, no halo. */
+function tileCanvas(sk, img, dark) {
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+
+  if (img) {
+    const box = sk.wide ? S * 0.86 : S * 0.72;
+    const iw = img.naturalWidth || box, ih = img.naturalHeight || box;
+    const k = Math.min(box / iw, box / ih);
+    const w = iw * k, h = ih * k;
+    try { ctx.drawImage(img, (S - w) / 2, (S - h) / 2, w, h); } catch (e) { /* ignore */ }
+  } else {
+    const label = sk.m || sk.n.slice(0, 3);
+    roundRect(ctx, S * 0.17, S * 0.17, S * 0.66, S * 0.66, S * 0.16);
+    ctx.fillStyle = sk.mc || '#334155';
+    ctx.fill();
+    ctx.fillStyle = sk.dark ? '#12161d' : '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    let fs = label.length <= 1 ? 110 : label.length <= 2 ? 88 : 62;
+    ctx.font = '700 ' + fs + 'px "Space Grotesk", system-ui, sans-serif';
+    while (ctx.measureText(label).width > S * 0.52 && fs > 22) {
+      fs -= 3;
+      ctx.font = '700 ' + fs + 'px "Space Grotesk", system-ui, sans-serif';
+    }
+    ctx.fillText(label, cx, cx + 2);
+  }
+  return c;
+}
+
+function loadImg(url) {
+  return new Promise((res) => {
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = () => res(im);
+    im.onerror = () => res(null);
+    im.src = url;
+  });
+}
+
+const smooth = (t) => t * t * (3 - 2 * t);
+const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+
+class SkillsField extends HTMLElement {
+  connectedCallback() {
+    if (this._built) return;
+    this._built = true;
+
+    this.style.cssText = 'position:fixed;inset:0;z-index:1;pointer-events:none;display:block;';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, .1, 100);
+    camera.position.set(0, 0, 10);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;';
+    this.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+    const key = new THREE.DirectionalLight(0xffffff, 1.25);
+    key.position.set(4, 6, 8);
+    scene.add(key);
+
+    const labels = document.createElement('div');
+    labels.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2;display:none;';
+    this.appendChild(labels);
+
+    const geo = new THREE.PlaneGeometry(1, 1);
+    const items = [];
+
+    SKILLS.forEach((sk, i) => {
+      const tex = new THREE.CanvasTexture(tileCanvas(sk, null, isDark()));
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 8;
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex, transparent: true, opacity: .28, depthWrite: false
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.userData.i = i;
+      scene.add(mesh);
+
+      const lab = document.createElement('div');
+      const cc = CATS[sk.c];
+      lab.style.cssText = 'position:absolute;left:0;top:0;transform:translate(-50%,0);white-space:nowrap;' +
+        'display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:7px;' +
+        'background:' + rgba(cc.rgb, .16) + ';border:1px solid ' + rgba(cc.rgb, .55) + ';' +
+        'font:500 10.5px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.3px;color:#022B3A;opacity:0;';
+      const dot = document.createElement('span');
+      dot.style.cssText = 'width:6px;height:6px;border-radius:50%;background:' + cc.hex + ';box-shadow:0 0 6px ' + cc.hex + ';';
+      const txt = document.createElement('span');
+      txt.textContent = sk.n;
+      lab.appendChild(dot); lab.appendChild(txt);
+      labels.appendChild(lab);
+
+      items.push({
+        sk, mesh, mat, lab,
+        base: new THREE.Vector3(),
+        phase: Math.random() * Math.PI * 2,
+        spd: .3 + Math.random() * .45,
+        amp: .35 + Math.random() * .55,
+        // stratified-random cell so the scatter covers the whole viewport, centre included
+        cell: i, jx: Math.random(), jy: Math.random(), seedZ: Math.random()
+      });
+
+      if (sk.u) loadImg(sk.u).then((im) => {
+        if (!im) return;
+        const item = items[i];
+        item.img = im;
+        if (!(isDark() && item.imgD)) {
+          mat.map.image = tileCanvas(sk, isDark() && item.imgD ? item.imgD : im, isDark());
+          mat.map.needsUpdate = true;
+        }
+      });
+      if (sk.du) loadImg(sk.du).then((im) => {
+        if (!im) return;
+        const item = items[i];
+        item.imgD = im;
+        if (isDark()) {
+          mat.map.image = tileCanvas(sk, im, true);
+          mat.map.needsUpdate = true;
+        }
+      });
+    });
+
+    /* ---- sizing / layout ---- */
+    let vw = 0, vh = 0, worldH = 0, worldW = 0, perPx = 1, tilePx = 72;
+    const grid = [];
+
+    const measure = () => {
+      vw = window.innerWidth; vh = window.innerHeight;
+      if (vw < 4 || vh < 4) return;
+      renderer.setSize(vw, vh, false);
+      camera.aspect = vw / vh;
+      camera.updateProjectionMatrix();
+      worldH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(45) / 2);
+      worldW = worldH * camera.aspect;
+      perPx = worldH / vh;
+
+      // compact labels on narrow screens so more columns fit
+      const compact = vw < 700;
+      if (compact !== this._compact) {
+        this._compact = compact;
+        this._maxLab = 0;
+        items.forEach((it) => {
+          it.lab.style.fontSize = compact ? '9px' : '10.5px';
+          it.lab.style.padding = compact ? '2px 5px' : '3px 8px';
+          it.lab.style.gap = compact ? '4px' : '6px';
+          it.lab.firstChild.style.display = compact ? 'none' : 'block';
+        });
+      }
+
+      // scattered idle positions across the whole viewport (jittered grid, no ring)
+      const N = items.length;
+      const gc = Math.ceil(Math.sqrt(N));
+      items.forEach((it) => {
+        const cxi = it.cell % gc, cyi = Math.floor(it.cell / gc);
+        const fx = (cxi + .5 + (it.jx - .5) * .92) / gc;
+        const fy = (cyi + .5 + (it.jy - .5) * .92) / gc;
+        it.base.set(
+          (fx - .5) * worldW * .94,
+          (fy - .5) * worldH * .88,
+          -2.2 + it.seedZ * 3.4
+        );
+      });
+      layout();
+    };
+
+    /* targets are the chips themselves: each floating logo flies onto its
+       chip's icon in the skills cards, then hands visibility over to it */
+    const layout = () => {
+      const zone = document.querySelector(this.getAttribute('target') || '#skills');
+      if (!zone) return;
+      const zr = zone.getBoundingClientRect();
+      if (zr.width < 4 || zr.height < 4) return;
+      let mapped = 0;
+      items.forEach((it) => {
+        let el = zone.querySelector('img[data-skill="' + it.sk.n + '"]');
+        if (!el) el = zone.querySelector('[data-skill="' + it.sk.n + '"]');
+        it.chipImg = el && el.tagName === 'IMG' ? el : null;
+        if (el) {
+          const tr = el.getBoundingClientRect();
+          it.tx = tr.left + tr.width / 2 - zr.left;
+          it.ty = tr.top + tr.height / 2 - zr.top;
+          it.tw = Math.max(14, Math.min(tr.width, 26));
+          it.hasT = true;
+          mapped++;
+        } else it.hasT = false;
+      });
+      this._zone = mapped ? zone : null;
+    };
+
+    const toWorld = (sx, sy, out) => out.set((sx / vw - .5) * worldW, -(sy / vh - .5) * worldH, 0);
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
+    window.addEventListener('resize', measure);
+    this._ro = ro;
+
+    /* ---- hover ---- */
+    const ray = new THREE.Raycaster();
+    const ndc = new THREE.Vector2();
+    let hoverI = -1, mouse = null;
+    const onMove = (e) => { mouse = { x: e.clientX, y: e.clientY }; };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    this._onMove = onMove;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---- loop ---- */
+    const tmp = new THREE.Vector3();
+    const tgt = new THREE.Vector3();
+    const proj = new THREE.Vector3();
+    let p = 0;
+    let frame = 0;
+    const t0 = performance.now();
+
+    const tick = () => {
+      this._raf = requestAnimationFrame(tick);
+      const t = (performance.now() - t0) / 1000;
+
+      // labels are DOM text — follow the page theme
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (dark !== this._darkLab) {
+        this._darkLab = dark;
+        items.forEach((it) => {
+          it.lab.style.color = dark ? '#E1E5F2' : '#022B3A';
+          it.mat.map.image = tileCanvas(it.sk, (dark && it.imgD) ? it.imgD : (it.img || null), dark);
+          it.mat.map.needsUpdate = true;
+        });
+      }
+
+      // chips stream in after mount, and card layout can reflow — remap regularly
+      frame++;
+      if ((!this._zone && frame % 15 === 0) || frame % 45 === 0) layout();
+
+      // continuous: assemble in proportion to how much of the zone is on screen,
+      // so tiles start spreading back out as soon as the section begins to leave —
+      // scrolling up or down — instead of waiting until it's fully gone
+      let want = 0;
+      if (this._zone) {
+        const r = this._zone.getBoundingClientRect();
+        const seen = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+        const ratio = clamp01(seen / Math.min(r.height, vh));
+        want = clamp01((ratio - .06) / .24);   // fully grouped once ~30% of the section is in view
+      }
+      p += (want - p) * .045;
+      const e = smooth(clamp01(p));
+
+      // discs stay present everywhere, but sit back to half strength behind body copy
+      const scy = window.scrollY || document.documentElement.scrollTop || 0;
+      const heroFade = clamp01(1 - scy / (vh * .72));
+      const idleVis = .11 + .11 * heroFade;
+
+      const zr = this._zone ? this._zone.getBoundingClientRect() : null;
+
+      for (let i = 0; i < items.length; i++) {
+        const it = items[i];
+
+        // idle drift
+        tmp.copy(it.base);
+        if (!reduce) {
+          tmp.x += Math.sin(t * it.spd + it.phase) * it.amp;
+          tmp.y += Math.cos(t * it.spd * .8 + it.phase) * it.amp * .8;
+        }
+
+        let ei = e;
+        if (zr && it.hasT) {
+          toWorld(zr.left + it.tx, zr.top + it.ty, tgt);
+        } else {
+          tgt.copy(tmp);
+          ei = 0;
+        }
+
+        it.mesh.position.lerpVectors(tmp, tgt, ei);
+        const px = 64 + ((it.tw || 18) * 1.25 - 64) * ei;
+        it.mesh.scale.setScalar(px * perPx);
+
+        // visible on the flight in, then hand off to the chip's own icon
+        it.mat.opacity = ei < .85 ? Math.max(idleVis, ei * 1.08) : Math.max(0, .92 * (1 - (ei - .85) / .15));
+        if (it.chipImg) {
+          const io = (.15 + .85 * clamp01((ei - .7) / .28)).toFixed(2);
+          if (it._io !== io) { it._io = io; it.chipImg.style.opacity = io; }
+        }
+        if (it.lab.style.opacity !== '0') it.lab.style.opacity = '0';
+      }
+
+      renderer.render(scene, camera);
+    };
+    this._raf = requestAnimationFrame(tick);
+    this.items = items;
+
+    this._cleanup = () => {
+      cancelAnimationFrame(this._raf);
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('mousemove', onMove);
+      renderer.dispose();
+      geo.dispose();
+    };
+  }
+
+  disconnectedCallback() { if (this._cleanup) this._cleanup(); }
+}
+
+if (!customElements.get('skills-field')) customElements.define('skills-field', SkillsField);
+
+</script>
+<style>
+  :root{
+    --bg:#E1E5F2; --bg2:#BFDBF7; --panel:rgba(255,255,255,.80);
+    --panel2:#ffffff; --border:rgba(2,43,58,.14);
+    --txt:#022B3A; --muted:#2C6274; --faint:#386D80; --txt2:#123F52; --icon:#386D80;
+    --surfA:rgba(255,255,255,.95); --surfB:rgba(255,255,255,.68);
+    --line:rgba(2,43,58,.12); --grid:rgba(2,43,58,.06); --track:rgba(2,43,58,.10);
+    --shadow:rgba(2,43,58,.13); --headerbg:rgba(225,229,242,.80);
+    --scrollT:#BFDBF7; --scrollH:#1C6E7E; --selTxt:#ffffff; --onAccent:#ffffff;
+    --tintA:rgba(28,110,126,.13); --tintB:rgba(2,43,58,.10);
+    --accent:#1C6E7E; --accent2:#022B3A; --ps:running;
+    --disp:'Space Grotesk',sans-serif; --body:'IBM Plex Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--accent);color:var(--selTxt);}
+  a{color:var(--accent);}
+  a:hover{color:var(--accent2);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--scrollT);border-radius:8px;border:2px solid var(--bg);}
+  ::-webkit-scrollbar-thumb:hover{background:var(--scrollH);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  @keyframes riseIn{from{transform:translateY(24px);}to{transform:none;}}
+  [data-reduce="1"] [data-reveal]{animation:none !important;opacity:1 !important;transform:none !important;}
+  @keyframes gridScroll{from{background-position:0 0;}to{background-position:0 -54px;}}
+  @keyframes floatA{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-30px);}}
+  @keyframes floatB{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,25px);}}
+  @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.55);opacity:.5;}}
+  @keyframes draw{from{stroke-dashoffset:1;}to{stroke-dashoffset:0;}}
+  @keyframes growBar{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  @keyframes shimmer{0%{transform:translateX(-120%);}100%{transform:translateX(320%);}}
+  @keyframes flowDot{0%{left:0;opacity:0;}4%{opacity:1;}20%{opacity:1;left:calc(100% - 7px);}24%{opacity:0;left:calc(100% - 7px);}100%{opacity:0;left:calc(100% - 7px);}}
+  @keyframes nodePing{0%{opacity:0;transform:scale(1);}12%{opacity:.9;transform:scale(1);}28%{opacity:0;transform:scale(1.35);}100%{opacity:0;transform:scale(1.35);}}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes spinGrad{to{transform:rotate(360deg);}}
+  @media(max-width:860px){
+    #home{grid-template-columns:1fr !important;gap:40px !important;padding-top:118px !important;min-height:auto !important;padding-bottom:60px;}
+    [data-about-grid]{grid-template-columns:1fr !important;gap:28px !important;}
+    [data-contact-grid]{grid-template-columns:1fr !important;}
+    [data-sidenav]{display:none !important;}
+  }
+  @media(max-width:520px){
+    [data-cf-row]{grid-template-columns:1fr !important;}
+  }
+  @media(max-width:540px){
+    [data-formation-head]{flex-wrap:wrap;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    [data-reveal]{animation:none !important;opacity:1 !important;transform:none !important;}
+  }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:radial-gradient(1200px 700px at 80% -5%,rgba(2,43,58,.10),transparent 60%),radial-gradient(900px 600px at 5% 100%,rgba(28,110,126,.10),transparent 55%),var(--bg);overflow:hidden;">
+
+  <x-import component-from-global-scope="skills-field" target="#skills" hint-size="1px,1px"></x-import>
+
+  <!-- animated background -->
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;">
+    <div style="position:absolute;inset:-2px;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:54px 54px;animation:gridScroll 9s linear infinite;animation-play-state:var(--ps);mask-image:radial-gradient(120% 100% at 50% 0%,#000 30%,transparent 90%);-webkit-mask-image:radial-gradient(120% 100% at 50% 0%,#000 30%,transparent 90%);"></div>
+    <div style="position:absolute;top:8%;left:62%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(2,43,58,.16),transparent 70%);filter:blur(20px);animation:floatA 16s ease-in-out infinite;animation-play-state:var(--ps);"></div>
+    <div style="position:absolute;top:55%;left:6%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(28,110,126,.14),transparent 70%);filter:blur(20px);animation:floatB 19s ease-in-out infinite;animation-play-state:var(--ps);"></div>
+  </div>
+
+  <!-- top bar -->
+  <header style="position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);backdrop-filter:blur(8px);background:linear-gradient(180deg,var(--headerbg),transparent);">
+    <a href="#home" style="display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);">
+      <span style="display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));font-family:var(--disp);font-weight:700;color:var(--onAccent);font-size:15px;letter-spacing:.5px;">OE</span>
+      <span style="font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.5px;">oussama_essalehi<span style="color:var(--accent);">.py</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end;">
+      <div style="display:flex;border:1px solid var(--border);border-radius:100px;overflow:hidden;background:var(--panel);">
+        <button data-lang-btn="en" onClick="{{ setEn }}" style="padding:7px 13px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.5px;transition:.25s;">EN</button>
+        <button data-lang-btn="fr" onClick="{{ setFr }}" style="padding:7px 13px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.5px;transition:.25s;">FR</button>
+      </div>
+      <button data-theme-btn="" onClick="{{ toggleTheme }}" title="Light / dark" style="display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border);border-radius:100px;background:var(--panel);color:var(--muted);cursor:pointer;transition:.25s;" style-hover="color:var(--accent);border-color:var(--accent);">
+        <svg data-theme-sun="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
+        <svg data-theme-moon="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="display:none;"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path></svg>
+      </button>
+      <div style="display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;color:var(--muted);">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 2.4s ease-in-out infinite;animation-play-state:var(--ps);"></span>
+        <span data-i18n="nav_status">OPEN TO WORK · FRANCE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- side nav -->
+  <nav data-sidenav="" style="position:fixed;right:clamp(14px,2.5vw,28px);top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:18px;align-items:center;">
+    <a href="#home" title="Home" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#about" title="About" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#formation" title="Formation" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#experience" title="Experience" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#skills" title="Skills" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#contact" title="Contact" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+  </nav>
+
+  <main style="position:relative;z-index:10;max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px);">
+
+    <!-- HERO -->
+    <section id="home" style="min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding-top:88px;">
+      <div>
+        
+        <div data-reveal="" data-delay="50" style="animation: riseIn .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: 50ms; display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border: 1px solid var(--border); border-radius: 100px; background: var(--panel); font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .5px; margin-bottom: 26px; position: static">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent);"></span>Data &amp; AI Engineer<br></div><h1 data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;font-family:var(--disp);font-weight:700;font-size:clamp(44px,6.4vw,84px);line-height:.98;letter-spacing:-2px;margin:0 0 8px;">
+          <span data-type-line="1">Oussama</span><br><span data-type-line="2" style="background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">Essalehi</span>
+        </h1>
+        <p data-rotate-line="" style="font-family:var(--disp);font-weight:600;font-size:clamp(18px,1.7vw,25px);color:var(--accent);margin:0 0 18px;">Turning Data into Insights</p>
+        <p data-reveal="" data-delay="260" style="animation: riseIn .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: 260ms; font-size: clamp(16px,1.5vw,19px); color: var(--muted); line-height: 1.6; max-width: 480px; margin: 18px 0 32px; font-weight: 300; text-align: justify" data-i18n="hero_intro">
+          I turn raw, messy data into clear stories and confident decisions, from querying and cleaning to modeling and visualization.
+        </p>
+        <div data-reveal="" data-delay="380" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:380ms;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+          <a href="#contact" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14.5px;transition:.3s;box-shadow:0 8px 30px rgba(28,110,126,.25);" style-hover="transform:translateY(-3px);box-shadow:0 14px 40px rgba(28,110,126,.4);" data-i18n="btn_contact">Get in touch →</a>
+          <a href="#skills" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);" data-i18n="btn_skills">View skills</a>
+        </div>
+      </div>
+
+      <!-- dashboard motif -->
+      <div data-reveal="" data-delay="320" style="animation:riseIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:320ms;border:1px solid var(--border);border-radius:20px;background:linear-gradient(160deg,var(--surfA),var(--surfB));backdrop-filter:blur(12px);padding:22px;box-shadow:0 30px 80px var(--shadow);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.5px;">analytics.live</span>
+          <span style="display:flex;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span><span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span><span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span></span>
+        </div>
+        <div style="position:relative;height:150px;margin-bottom:18px;display:flex;align-items:center;">
+          <div style="display:flex;align-items:center;width:100%;gap:0;">
+
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;border:1px solid rgba(28,110,126,.35);background:rgba(28,110,126,.08);color:var(--accent);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5.5" rx="8" ry="3"></ellipse><path d="M4 5.5v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"></path><path d="M4 11.5v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"></path></svg>
+                <span style="position:absolute;inset:-1px;border-radius:14px;border:1px solid var(--accent);opacity:0;animation:nodePing 5.6s ease-out infinite;animation-delay:0s;animation-play-state:var(--ps);"></span>
+              </span>
+              <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;color:var(--muted);">SOURCE</span>
+            </div>
+
+            <div style="position:relative;flex:1;height:2px;background:var(--line);margin:0 6px 26px;border-radius:2px;">
+              <span style="position:absolute;top:50%;left:0;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent),0 0 16px rgba(28,110,126,.5);opacity:0;animation:flowDot 5.6s linear infinite;animation-delay:.5s;animation-play-state:var(--ps);"></span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;border:1px solid var(--border);background:var(--panel2);color:var(--icon);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h18l-7 8v5.5l-4 2V13L3 5Z"></path></svg>
+                <span style="position:absolute;inset:-1px;border-radius:14px;border:1px solid var(--accent);opacity:0;animation:nodePing 5.6s ease-out infinite;animation-delay:1.4s;animation-play-state:var(--ps);"></span>
+              </span>
+              <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;color:var(--muted);">CLEAN</span>
+            </div>
+
+            <div style="position:relative;flex:1;height:2px;background:var(--line);margin:0 6px 26px;border-radius:2px;">
+              <span style="position:absolute;top:50%;left:0;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent),0 0 16px rgba(28,110,126,.5);opacity:0;animation:flowDot 5.6s linear infinite;animation-delay:1.9s;animation-play-state:var(--ps);"></span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;border:1px solid var(--border);background:var(--panel2);color:var(--icon);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"></rect><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"></path></svg>
+                <span style="position:absolute;inset:-1px;border-radius:14px;border:1px solid var(--accent);opacity:0;animation:nodePing 5.6s ease-out infinite;animation-delay:2.8s;animation-play-state:var(--ps);"></span>
+              </span>
+              <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;color:var(--muted);">MODEL</span>
+            </div>
+
+            <div style="position:relative;flex:1;height:2px;background:var(--line);margin:0 6px 26px;border-radius:2px;">
+              <span style="position:absolute;top:50%;left:0;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2),0 0 16px rgba(2,43,58,.5);opacity:0;animation:flowDot 5.6s linear infinite;animation-delay:3.3s;animation-play-state:var(--ps);"></span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;border:1px solid rgba(2,43,58,.4);background:rgba(2,43,58,.1);color:var(--accent2);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+                <span style="position:absolute;inset:-1px;border-radius:14px;border:1px solid var(--accent2);opacity:0;animation:nodePing 5.6s ease-out infinite;animation-delay:4.2s;animation-play-state:var(--ps);"></span>
+              </span>
+              <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;color:var(--muted);">DASHBOARD</span>
+            </div>
+
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="border:1px solid var(--border);border-radius:12px;padding:13px;background:var(--panel);">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.5px;margin-bottom:5px;" data-i18n="tile_degree">DEGREE</div>
+            <div style="font-family:var(--disp);font-weight:600;font-size:14px;" data-i18n="tile_degree_val">Master · MIAGE Data Engineering &amp; Protection</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:12px;padding:13px;background:var(--panel);">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.5px;margin-bottom:5px;" data-i18n="tile_base">BASE</div><div style="font-family: var(--disp); font-weight: 600; font-size: 14px; width: 184px; height: 17px">Toulouse · FR</div>
+            
+          </div>
+        </div>
+        <div style="position:relative;height:5px;border-radius:100px;background:var(--track);overflow:hidden;margin-top:12px;">
+          <div style="position:absolute;top:0;left:0;height:100%;width:35%;border-radius:100px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:shimmer 2.6s ease-in-out infinite;animation-play-state:var(--ps);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="padding:90px 0;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:30px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">01</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="about_h">About</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+      <div data-about-grid="" style="display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start;">
+        <div data-reveal="" data-delay="80" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:80ms;border:1px solid rgba(2,43,58,.35);border-radius:14px;overflow:hidden;background:#04222D;box-shadow:0 18px 44px var(--shadow);">
+          <div style="display:flex;align-items:center;gap:8px;padding:11px 14px;background:rgba(255,255,255,.045);border-bottom:1px solid rgba(191,219,247,.12);">
+            <span style="width:11px;height:11px;border-radius:50%;background:#FF5F57;"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#FEBC2E;"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#28C840;"></span>
+            <span style="margin-left:10px;font-family:var(--mono);font-size:11px;letter-spacing:.4px;color:#7FA0B5;">oussama@portfolio : ~/about</span>
+          </div>
+          <div data-term-body="" style="padding:18px 20px 22px;font-family:var(--mono);font-size:13.5px;line-height:2.05;color:#BFDBF7;min-height:320px;"></div>
+        </div>
+        <div data-reveal="" data-delay="160" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:160ms;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel);">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent);">→</span>
+            <span style="font-size:14px;color:var(--muted);" data-i18n-html="about_f1">Based in <span style="color:var(--txt);">Toulouse</span></span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel);">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent);">→</span>
+            <span style="font-size:14px;color:var(--muted);" data-i18n-html="about_f2">Open to relocate <span style="color:var(--txt);">across France</span></span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel);">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent);">→</span>
+            <span style="font-size:14px;color:var(--muted);" data-i18n-html="about_f3">Looking for a <span style="color:var(--txt);">full-time role (CDI)</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMATION -->
+    <section id="formation" style="padding:90px 0;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">02</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;">Formation</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+      <div style="position:relative;padding-left:34px;">
+        <span style="position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent);"></span>
+
+        <div data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;position:relative;margin-bottom:26px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:24px 26px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <span style="position:absolute;left:-34px;top:28px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--bg),0 0 16px var(--accent);"></span>
+          <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:baseline;margin-bottom:8px;">
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;margin:0;letter-spacing:-.5px;"><span style="color:var(--accent);">Master</span> MIAGE IDP</h3>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--muted);" data-i18n="form1_date">Sep 2024 — Aug 2026</span>
+          </div>
+          <p style="margin:0 0 6px;color:var(--txt2);font-size:15px;" data-i18n="form1_sub">Data Engineering &amp; Protection</p>
+          <p style="margin:0;color:var(--muted);font-size:13.5px;font-family:var(--mono);">Université Paul Sabatier · Toulouse</p>
+        </div>
+
+        <div data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;position:relative;border:1px solid var(--border);border-radius:16px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:24px 26px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <span style="position:absolute;left:-34px;top:28px;width:14px;height:14px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 4px var(--bg),0 0 16px var(--accent2);"></span>
+          <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:baseline;margin-bottom:8px;">
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;margin:0;letter-spacing:-.5px;"><span style="color: #1C6E7E">Licence</span> Informatique</h3>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--muted);" data-i18n="form2_date">Sep 2022 — Aug 2024</span>
+          </div>
+          <p style="margin:0 0 6px;color:var(--txt2);font-size:15px;" data-i18n="form2_sub">Miage</p>
+          <p style="margin:0;color:var(--muted);font-size:13.5px;font-family:var(--mono);">Université de Haute-Alsace · Mulhouse</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" style="padding:90px 0;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">03</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="exp_h">Where I've worked</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+      <div style="position:relative;padding-left:34px;">
+        <span style="position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent);"></span>
+
+        <div data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;position:relative;border:1px solid var(--border);border-radius:16px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:24px 26px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <span style="position:absolute;left:-34px;top:28px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--bg),0 0 16px var(--accent);"></span>
+          <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:baseline;margin-bottom:8px;">
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;margin:0;letter-spacing:-.5px;"><span style="color: var(--accent);">Data Analyst</span></h3>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--muted);" data-i18n="exp1_date">Sep 2024 — Aug 2026</span>
+          </div>
+          <p style="margin:0 0 14px;color:var(--txt2);font-size:15px;" data-i18n="exp1_sub">Wewise · Toulouse, France</p>
+          <ul style="margin:0;padding:0 0 0 2px;list-style:none;display:flex;flex-direction:column;gap:9px;">
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b1">Built and maintained Power BI dashboards used daily by business teams</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b2">Developed SQL and Python pipelines to collect, clean and model data from multiple sources</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b3">Automated recurring reporting, saving hours of manual work every week</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b4">Managed the company ERP and its database, including bug fixes and corrections</span></li>
+          </ul>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Excel (VBA)</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL Server</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Power BI</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Python</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;" data-i18n="exp1_t6">AI agents</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" style="padding:90px 0;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">04</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="skills_h">Skills</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+      <p data-reveal="" data-delay="40" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:40ms;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:0 0 34px;" data-i18n="skills_note">// languages · databases · web · BI · cloud</p>
+
+      <div data-reveal="" data-delay="90" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:90ms;display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px;">
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_prog">Programming</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/python.svg?height=48" alt="" data-skill="Python" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Python</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/java.svg?height=48" alt="" data-skill="Java" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Java</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/php.svg?height=48" alt="" data-skill="PHP" style="width:19px;height:17px;object-fit:contain;" loading="lazy">PHP</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/javascript.svg?height=48" alt="" data-skill="JavaScript" style="width:16px;height:16px;object-fit:contain;" loading="lazy">JavaScript</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/vscode-icons/file-type-sql.svg?height=48" alt="" data-skill="SQL" style="width:17px;height:17px;object-fit:contain;" loading="lazy">SQL</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_ai">AI &amp; ML</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/devicon/scikitlearn.svg?height=48" alt="" data-skill="Scikit-learn" style="width:18px;height:17px;object-fit:contain;" loading="lazy">Scikit-learn</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/pytorch-icon.svg?height=48" alt="" data-skill="PyTorch" style="width:16px;height:17px;object-fit:contain;" loading="lazy">PyTorch</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/hugging-face-icon.svg?height=48" alt="" data-skill="Hugging Face" style="width:18px;height:17px;object-fit:contain;" loading="lazy">Hugging Face</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/langchain.svg?height=48&amp;color=%231C6E7E" alt="" data-skill="LangChain" style="width:19px;height:17px;object-fit:contain;" loading="lazy">LangChain</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">RAG</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">LLM APIs</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);" data-i18n="sk_agents">AI agents</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_db">Databases</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/postgresql.svg?height=48" alt="" data-skill="PostgreSQL" style="width:17px;height:17px;object-fit:contain;" loading="lazy">PostgreSQL</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/mysql-icon.svg?height=48" alt="" data-skill="MySQL" style="width:19px;height:17px;object-fit:contain;" loading="lazy">MySQL</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/devicon/microsoftsqlserver.svg?height=48" alt="" data-skill="SQL Server" style="width:17px;height:17px;object-fit:contain;" loading="lazy">SQL Server</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/mongodb-icon.svg?height=48" alt="" data-skill="MongoDB" style="width:12px;height:17px;object-fit:contain;" loading="lazy">MongoDB</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/oracle.svg?height=48&amp;color=%23C74634" alt="" data-skill="Oracle" style="width:22px;height:15px;object-fit:contain;" loading="lazy">Oracle</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_web">Web Development</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/react.svg?height=48" alt="" data-skill="React" style="width:18px;height:17px;object-fit:contain;" loading="lazy">React</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/nodejs-icon.svg?height=48" alt="" data-skill="Node.js" style="width:16px;height:17px;object-fit:contain;" loading="lazy">Node.js</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/flask.svg?height=48" alt="" data-skill="Flask" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Flask</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/laravel.svg?height=48" alt="" data-skill="Laravel" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Laravel</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/symfony.svg?height=48" alt="" data-skill="Symfony" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Symfony</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/html-5.svg?height=48" alt="" data-skill="HTML" style="width:15px;height:17px;object-fit:contain;" loading="lazy">HTML</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/css-3.svg?height=48" alt="" data-skill="CSS" style="width:15px;height:17px;object-fit:contain;" loading="lazy">CSS</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_bi">Data &amp; BI</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/pandas-icon.svg?height=48" alt="" data-skill="pandas" style="width:12px;height:17px;object-fit:contain;" loading="lazy">pandas</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/numpy.svg?height=48" alt="" data-skill="NumPy" style="width:17px;height:17px;object-fit:contain;" loading="lazy">NumPy</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/microsoft-power-bi.svg?height=48" alt="" data-skill="Power BI" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Power BI</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);" data-skill="Power Query">Power Query</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/vscode-icons/file-type-excel.svg?height=48" alt="" data-skill="Excel (VBA)" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Excel (VBA)</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/tableau.svg?height=48&amp;color=%23E97627" alt="" data-skill="Tableau" style="width:16px;height:16px;object-fit:contain;" loading="lazy">Tableau</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_cloud">Cloud &amp; Tools</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/aws.svg?height=48" alt="" data-skill="AWS" style="width:21px;height:14px;object-fit:contain;" loading="lazy">AWS</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/google-cloud.svg?height=48" alt="" data-skill="Google Cloud" style="width:19px;height:16px;object-fit:contain;" loading="lazy">Google Cloud</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/git-icon.svg?height=48" alt="" data-skill="Git" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Git</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/docker-icon.svg?height=48" alt="" data-skill="Docker" style="width:19px;height:15px;object-fit:contain;" loading="lazy">Docker</span>
+          </div>
+        </div>
+
+      </div>
+      </section>
+    
+
+    <!-- CONTACT -->
+    <section id="contact" style="padding:90px 0 40px;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:34px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">05</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;">Contact</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+
+      <div data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;position:relative;z-index:2;border:1px solid var(--border);border-radius:22px;background:linear-gradient(160deg,var(--surfA),var(--surfB)),var(--bg);backdrop-filter:blur(12px);padding:clamp(26px,4vw,44px);">
+        <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.5px;margin:0 0 8px;" data-i18n="contact_title">Let's talk data &amp; AI.</h3>
+        <p style="color: var(--muted); font-size: 15px; margin: 0 0 30px; max-width: 555px; line-height: 1.6; width: 552px; height: 40px; text-transform: none; position: static; overflow: visible" data-i18n="contact_sub">Based in Toulouse and open to opportunities across France. Feel free to reach out.</p>
+
+        <div data-contact-grid="" style="display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(28px,4.5vw,58px);align-items:start;">
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div data-cf-row="" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <input data-cf-name="" type="text" placeholder="Your name" data-i18n-ph="form_name_ph" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);color:var(--txt);font-family:var(--body,inherit);font-size:14px;outline:none;transition:border-color .25s,box-shadow .25s;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--tintA);">
+              <input data-cf-email="" type="email" placeholder="you@example.com" data-i18n-ph="form_email_ph" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);color:var(--txt);font-family:var(--body,inherit);font-size:14px;outline:none;transition:border-color .25s,box-shadow .25s;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--tintA);">
+            </div>
+            <input data-cf-subj="" type="text" placeholder="Subject" data-i18n-ph="form_subj_ph" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);color:var(--txt);font-family:var(--body,inherit);font-size:14px;outline:none;transition:border-color .25s,box-shadow .25s;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--tintA);">
+            <textarea data-cf-msg="" rows="6" placeholder="Tell me about your project..." data-i18n-ph="form_msg_ph" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);color:var(--txt);font-family:var(--body,inherit);font-size:14px;outline:none;transition:border-color .25s,box-shadow .25s;resize:vertical;min-height:150px;line-height:1.6;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--tintA);"></textarea>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <button data-cf-btn="" onClick="{{ sendMsg }}" style="display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-size:14.5px;font-weight:600;cursor:pointer;transition:transform .25s,box-shadow .25s,opacity .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);">
+                <span data-i18n="form_send">Send message</span>
+                <span data-cf-spin="" style="display:none;width:14px;height:14px;box-sizing:border-box;border:2px solid rgba(255,255,255,.35);border-top-color:var(--onAccent);border-radius:50%;animation:spinGrad .8s linear infinite;"></span>
+                <svg data-cf-plane="" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+              </button>
+              <span data-cf-note="" style="font-family:var(--mono);font-size:11.5px;color:var(--faint);"></span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <p style="margin:0;font-size:14.5px;line-height:1.7;color:var(--muted);">
+              <span data-i18n="form_direct">Prefer email? Reach me directly at</span>
+              <a href="mailto:oussama.essalehi@gmail.com" style="color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap;">oussama.essalehi@gmail.com</a>
+            </p>
+            <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;color:var(--faint);" data-i18n="lbl_elsewhere">ELSEWHERE</span>
+            <div style="display:flex;flex-direction:column;gap:13px;">
+              <a href="https://www.linkedin.com/in/oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:11px;color:var(--txt2);text-decoration:none;font-size:14.5px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateX(3px);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="color:var(--icon);flex-shrink:0;"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>LinkedIn
+              </a>
+              <a href="https://github.com/ouss254" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:11px;color:var(--txt2);text-decoration:none;font-size:14.5px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateX(3px);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="color:var(--icon);flex-shrink:0;"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg>GitHub
+              </a>
+              <a href="tel:+33752073100" style="display:flex;align-items:center;gap:11px;color:var(--txt2);text-decoration:none;font-size:14.5px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateX(3px);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--icon);flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>+33 7 52 07 31 00
+              </a>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <footer style="padding:30px 0 50px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);">
+      <span style="font-family:var(--mono);font-size:12px;color:var(--faint);">@ Built with passion by Oussama</span>
+      <span style="font-family:var(--mono);font-size:12px;color:var(--faint);">Data &amp; AI Engineer · MIAGE IDP</span>
+    </footer>
+
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:820},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#1C6E7E&quot;,&quot;#2E5FA3&quot;,&quot;#5B4B9E&quot;,&quot;#A63A55&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;accent2Color&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#022B3A&quot;,&quot;#2E5FA3&quot;,&quot;#A63A55&quot;,&quot;#B26B12&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic {
+  dict = {
+    en: {
+      nav_status: "OPEN TO WORK · FRANCE",
+      hero_intro: "I turn raw, messy data into clear stories and confident decisions, from querying and cleaning to modeling and visualization.",
+      btn_contact: "Get in touch →",
+      btn_skills: "View skills",
+      tile_degree: "DEGREE",
+      tile_degree_val: "Master · MIAGE Data Engineering & Protection",
+      tile_base: "BASE",
+      about_h: "About",
+      about_p: "I'm a <strong style=\"color:var(--txt);font-weight:600;\">Data & AI Engineer</strong>, trained in <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Data Engineering & Protection) at Université Paul Sabatier in Toulouse. What I love most is turning raw, messy data into something people can actually use — building pipelines, modeling data, and designing dashboards that answer real questions. I'm just as passionate about generative AI: building products on top of LLMs, from RAG systems and AI agents to intelligent assistants grounded in real data. And I care about clarity, rigor, and the protection of the data I work with.",
+      about_f1: "Based in <span style=\"color:var(--txt);\">Toulouse</span>",
+      about_f2: "Open to relocate <span style=\"color:var(--txt);\">across France</span>",
+      about_f3: "Looking for a <span style=\"color:var(--txt);\">full-time role (CDI)</span>",
+      form1_sub: "Data Engineering & Protection",
+      form1_date: "Sep 2024 — Aug 2026",
+      form2_sub: "Computer Science",
+      form2_date: "Sep 2022 — Aug 2024",
+      exp_h: "Where I've worked",
+      exp1_date: "Sep 2024 — Aug 2026",
+      exp1_sub: "Wewise · Toulouse, France",
+      exp1_b1: "Built and maintained Power BI dashboards used daily by business teams",
+      exp1_b2: "Developed SQL and Python pipelines to collect, clean and model data from multiple sources",
+      exp1_b3: "Automated recurring reporting, saving hours of manual work every week",
+      exp1_b4: "Managed the company ERP and its database, including bug fixes and corrections",
+      exp1_t6: "AI agents",
+      skills_h: "Skills",
+      skills_note: "// programming · ai & ml · databases · web · data & bi · cloud",
+      sk_prog: "Programming",
+      sk_ai: "AI & ML",
+      sk_agents: "AI agents",
+      sk_db: "Databases",
+      sk_web: "Web Development",
+      sk_bi: "Data & BI",
+      sk_cloud: "Cloud & Tools",
+      cat_lang: "LANGUAGES",
+      cat_db: "DATABASES",
+      cat_web: "WEB DEVELOPMENT",
+      cat_bi: "VISUALIZATION & BI",
+      cat_cloud: "CLOUD COMPUTING",
+      contact_title: "Let's talk data & IA.",
+      form_name_ph: "Your name",
+      form_email_ph: "you@example.com",
+      form_msg_ph: "Tell me about your project...",
+      form_send: "Send message",
+      form_direct: "Prefer email? Reach me directly at",
+      lbl_elsewhere: "ELSEWHERE",
+      form_need: "Write a message first.",
+      form_bademail: "Please enter a valid email address.",
+      form_subj_ph: "Subject",
+      form_opened: "Your email app opened with the message. Just hit send.",
+      form_sending: "Sending…",
+      form_sent: "Message sent, thank you! I'll get back to you soon.",
+      form_subject: "Portfolio message from ",
+      contact_sub: "Based in Toulouse and open to opportunities across France. Feel free to reach out.",
+      cube_hint: "SCROLL IN · THE STACK ASSEMBLES",
+      lbl_email: "EMAIL",
+      lbl_phone: "PHONE",
+      lbl_linkedin: "LINKEDIN",
+      lbl_github: "GITHUB",
+      lbl_location: "LOCATION"
+    },
+    fr: {
+      nav_status: "OUVERT AU TRAVAIL · FRANCE",
+      hero_intro: "Je transforme des données brutes et désordonnées en récits clairs et décisions sûres, du requêtage et du nettoyage à la modélisation et la visualisation.",
+      btn_contact: "Me contacter →",
+      btn_skills: "Voir les compétences",
+      tile_degree: "DIPLÔME",
+      tile_degree_val: "Master · MIAGE Ingénierie des données et protection",
+      tile_base: "LIEU",
+      about_h: "À propos",
+      about_p: "Je suis <strong style=\"color:var(--txt);font-weight:600;\">Ingénieur Data & IA</strong>, formé en <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Ingénierie des Données et Protection) à l'Université Paul Sabatier de Toulouse. Ce que j'aime le plus, c'est transformer des données brutes et désordonnées en quelque chose de réellement utile — construire des pipelines, modéliser les données, concevoir des dashboards qui répondent à de vraies questions. Je suis tout aussi passionné par l'IA générative : créer des produits autour des LLMs, des systèmes RAG et agents IA jusqu'aux assistants intelligents ancrés dans des données réelles. Le tout avec une exigence de clarté, de rigueur et de protection des données que je manipule.",
+      about_f1: "Basé à <span style=\"color:var(--txt);\">Toulouse</span>",
+      about_f2: "Ouvert à la mobilité <span style=\"color:var(--txt);\">partout en France</span>",
+      about_f3: "À la recherche d'un <span style=\"color:var(--txt);\">CDI</span>",
+      form1_sub: "Ingénierie des Données et Protection",
+      form1_date: "Sep. 2024 — Août 2026",
+      form2_sub: "Informatique",
+      form2_date: "Sep. 2022 — Août 2024",
+      exp_h: "Expérience",
+      exp1_date: "Sep. 2024 — Août 2026",
+      exp1_sub: "Wewise · Toulouse, France",
+      exp1_b1: "Conception et maintenance de dashboards Power BI utilisés au quotidien par les équipes métier",
+      exp1_b2: "Développement de pipelines SQL et Python pour collecter, nettoyer et modéliser des données multi-sources",
+      exp1_b3: "Automatisation du reporting récurrent : plusieurs heures de travail manuel économisées chaque semaine",
+      exp1_b4: "Gestion de l'ERP de l'entreprise et de sa base de données, avec correction des bugs",
+      exp1_t6: "Agents IA",
+      skills_h: "Compétences",
+      skills_note: "// programmation · ia & ml · bases de données · web · data & bi · cloud",
+      sk_prog: "Programmation",
+      sk_ai: "IA & ML",
+      sk_agents: "Agents IA",
+      sk_db: "Bases de données",
+      sk_web: "Développement web",
+      sk_bi: "Data & BI",
+      sk_cloud: "Cloud & Outils",
+      cat_lang: "LANGAGES",
+      cat_db: "BASES DE DONNÉES",
+      cat_web: "DÉVELOPPEMENT WEB",
+      cat_bi: "VISUALISATION & BI",
+      cat_cloud: "CLOUD COMPUTING",
+      contact_title: "Parlons données & IA.",
+      form_name_ph: "Votre nom",
+      form_email_ph: "vous@exemple.com",
+      form_msg_ph: "Parlez-moi de votre projet...",
+      form_send: "Envoyer le message",
+      form_direct: "Vous préférez l'email ? Écrivez-moi directement à",
+      lbl_elsewhere: "AILLEURS",
+      form_need: "Écrivez d'abord un message.",
+      form_bademail: "Veuillez saisir une adresse email valide.",
+      form_subj_ph: "Objet du message",
+      form_opened: "Votre application mail s'est ouverte avec le message. Il ne reste qu'à envoyer.",
+      form_sending: "Envoi en cours…",
+      form_sent: "Message envoyé, merci ! Je vous réponds rapidement.",
+      form_subject: "Message du portfolio de ",
+      contact_sub: "Basé à Toulouse et ouvert aux opportunités partout en France. N’hésitez pas à me contacter.",
+      lbl_email: "EMAIL",
+      cube_hint: "AU SCROLL · LA STACK S’ASSEMBLE",
+      lbl_phone: "TÉLÉPHONE",
+      lbl_linkedin: "LINKEDIN",
+      lbl_github: "GITHUB",
+      lbl_location: "LOCALISATION"
+    }
+  };
+
+  termLines(lang) {
+    return lang === "fr" ? [
+      { t: "cmd", s: "whoami" },
+      { t: "out", s: "Oussama Essalehi · Ingénieur Data & IA" },
+      { t: "cmd", s: "cat formation.txt" },
+      { t: "out", s: "MIAGE IDP · Ingénierie des Données et Protection · Université Paul Sabatier, Toulouse" },
+      { t: "cmd", s: "./ce_que_j_aime.sh" },
+      { t: "ok", s: "Transformer des données brutes en outils réellement utiles" },
+      { t: "ok", s: "Pipelines, modélisation & dashboards qui répondent à de vraies questions" },
+      { t: "ok", s: "Produits GenAI sur des LLMs : RAG, agents, assistants" },
+      { t: "cmd", s: "grep -i valeurs profil.md" },
+      { t: "out", s: "clarté · fiabilité · curiosité" },
+      { t: "ok", s: "open_to_work = true" }
+    ] : [
+      { t: "cmd", s: "whoami" },
+      { t: "out", s: "Oussama Essalehi · Data & AI Engineer" },
+      { t: "cmd", s: "cat education.txt" },
+      { t: "out", s: "MIAGE IDP · Data Engineering & Protection · Université Paul Sabatier, Toulouse" },
+      { t: "cmd", s: "./what_i_love.sh" },
+      { t: "ok", s: "Turning raw, messy data into things people actually use" },
+      { t: "ok", s: "Pipelines, modeling & dashboards that answer real questions" },
+      { t: "ok", s: "GenAI products on top of LLMs: RAG, agents, assistants" },
+      { t: "cmd", s: "grep -i values profile.md" },
+      { t: "out", s: "clarity · reliability · curiosity" },
+      { t: "ok", s: "open_to_work = true" }
+    ];
+  }
+
+  termLineEl(ln) {
+    const d = document.createElement("div");
+    const pre = document.createElement("span");
+    const txt = document.createElement("span");
+    if (ln.t === "cmd") { pre.textContent = "$ "; pre.style.color = "#7FDBCA"; txt.style.color = "#E1E5F2"; }
+    else if (ln.t === "ok") { pre.textContent = "\u2714 "; pre.style.color = "#5FD68F"; txt.style.color = "#A8C3D6"; }
+    else { pre.textContent = "\u203A "; pre.style.color = "#7FA0B5"; txt.style.color = "#BFDBF7"; }
+    d.appendChild(pre); d.appendChild(txt);
+    return { el: d, txt: txt };
+  }
+
+  paintTermFinal() {
+    const body = this._termBody;
+    if (!body) return;
+    this.stopTerm();
+    body.innerHTML = "";
+    this.termLines(this.lang || "en").forEach((ln) => {
+      const r = this.termLineEl(ln);
+      r.txt.textContent = ln.s;
+      body.appendChild(r.el);
+    });
+    this._termDone = true;
+  }
+
+  stopTerm() {
+    (this._termTimers || []).forEach((id) => clearTimeout(id));
+    this._termTimers = [];
+    this._termPlaying = false;
+  }
+
+  playTerm() {
+    const body = this._termBody;
+    if (!body || this._termPlaying || this._termDone) return;
+    this._termPlaying = true;
+    this._termTimers = [];
+    body.innerHTML = "";
+    const lines = this.termLines(this.lang || "en");
+    const caret = document.createElement("span");
+    caret.style.cssText = "display:inline-block;width:8px;height:15px;background:#7FDBCA;vertical-align:-2px;margin-left:3px;animation:blink 1s steps(1) infinite;";
+    const later = (fn, ms) => { const id = setTimeout(fn, ms); this._termTimers.push(id); };
+    const step = (i) => {
+      if (i >= lines.length) { caret.remove(); this._termPlaying = false; this._termDone = true; return; }
+      const ln = lines[i];
+      const r = this.termLineEl(ln);
+      body.appendChild(r.el);
+      if (ln.t === "cmd") {
+        r.txt.after(caret);
+        let k = 0;
+        const type = () => {
+          k++;
+          r.txt.textContent = ln.s.slice(0, k);
+          if (k < ln.s.length) later(type, 34);
+          else later(() => step(i + 1), 300);
+        };
+        later(type, 120);
+      } else {
+        r.txt.textContent = ln.s;
+        r.el.appendChild(caret);
+        const next = lines[i + 1];
+        later(() => step(i + 1), next && next.t === "cmd" ? 460 : 240);
+      }
+    };
+    step(0);
+  }
+
+  initReveal() {
+    if (this._revInit) return;
+    this._revInit = true;
+    if (this.noMotion()) return;
+    const els = (this.rootEl || document).querySelectorAll("[data-reveal]");
+    const io = new IntersectionObserver((es) => {
+      es.forEach((en) => {
+        if (!en.isIntersecting) return;
+        const el = en.target;
+        el.style.transitionDelay = (parseInt(el.getAttribute("data-delay") || "0", 10)) + "ms";
+        el.style.opacity = "1";
+        el.style.transform = "none";
+        io.unobserve(el);
+      });
+    }, { threshold: .12, rootMargin: "0px 0px -5% 0px" });
+    els.forEach((el) => {
+      el.style.animation = "none";
+      el.style.opacity = "0";
+      el.style.transform = "translateY(28px)";
+      el.style.transition = "opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)";
+      io.observe(el);
+    });
+  }
+
+  initTerminal() {
+    const body = (this.rootEl || document).querySelector("[data-term-body]");
+    if (!body || this._termInit) return;
+    this._termInit = true;
+    this._termBody = body;
+    if (this.noMotion()) { this.paintTermFinal(); return; }
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) { io.disconnect(); this.playTerm(); }
+    }, { threshold: .3 });
+    io.observe(body);
+  }
+
+  noMotion() {
+    return this.props.reduceMotion === true ||
+      (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  typeName() {
+    if (this._typed || this.noMotion()) return;
+    this._typed = true;
+    const root = this.rootEl || document;
+    // the full name stays static; a smaller line under it word-rotates the phrases
+    const l2 = root.querySelector("[data-rotate-line]");
+    if (!l2) return;
+    const words = ["Turning Data into Insights", "Building AI Solutions", "Engineering Reliable Systems", "Creating Modern Applications"];
+    l2.style.display = "inline-block";
+    l2.style.transformOrigin = "50% 100%";
+    // reserve the height of the tallest phrase so the content below never jumps
+    const reserve = () => {
+      const keep = l2.textContent;
+      l2.style.minHeight = "";
+      let hMax = 0;
+      words.forEach((w) => { l2.textContent = w; hMax = Math.max(hMax, l2.offsetHeight); });
+      l2.textContent = keep;
+      l2.style.minHeight = hMax + "px";
+      l2.style.verticalAlign = "top";
+    };
+    reserve();
+    this._typeResize = () => reserve();
+    window.addEventListener("resize", this._typeResize);
+    l2.style.backfaceVisibility = "hidden";
+    if (l2.parentElement) l2.parentElement.style.perspective = "900px";
+    let wi = 0;
+    const show = () => {
+      l2.textContent = words[wi];
+      l2.animate([
+        { opacity: 0, transform: "translateY(24px) rotateX(82deg)" },
+        { opacity: 1, transform: "translateY(0) rotateX(0deg)" }
+      ], { duration: 520, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
+      this._typeTimer = setTimeout(hide, 2400);
+    };
+    const hide = () => {
+      const a = l2.animate([
+        { opacity: 1, transform: "translateY(0) rotateX(0deg)" },
+        { opacity: 0, transform: "translateY(-24px) rotateX(-82deg)" }
+      ], { duration: 380, easing: "cubic-bezier(.4,0,.7,.2)", fill: "both" });
+      a.onfinish = () => { wi = (wi + 1) % words.length; show(); };
+    };
+    this._typeTimer = setTimeout(hide, 2600);
+  }
+
+  decryptText(el) {
+    const final = el.getAttribute("data-final") || el.textContent;
+    el.setAttribute("data-final", final);
+    if (this.noMotion()) { el.textContent = final; return; }
+    const glyphs = "!<>-_\\/[]{}=+*^?#$%&@0123456789";
+    const dur = Math.min(1900, 500 + final.length * 11);
+    // scrambled glyphs wrap differently from the real text, so lock the box to the
+    // final text's height — otherwise everything below jumps around while it plays
+    if (el.__timer) { clearInterval(el.__timer); el.__timer = null; }
+    if (el.__unlock) el.__unlock();
+    el.textContent = final;
+    const lockH = el.offsetHeight;
+    const prevH = el.style.height, prevOv = el.style.overflow;
+    el.style.height = lockH + "px";
+    el.style.overflow = "hidden";
+    el.__unlock = () => { el.style.height = prevH; el.style.overflow = prevOv; el.__unlock = null; };
+    const t0 = performance.now();
+    el.__timer = setInterval(() => {
+      const p = Math.min(1, (performance.now() - t0) / dur);
+      const reveal = Math.floor(p * final.length);
+      let out = "";
+      for (let k = 0; k < final.length; k++) {
+        const ch = final[k];
+        out += (k < reveal || ch === " ") ? ch : glyphs[(Math.random() * glyphs.length) | 0];
+      }
+      el.textContent = out;
+      if (p >= 1) { el.textContent = final; clearInterval(el.__timer); el.__timer = null; el.__unlock(); }
+    }, 34);
+  }
+
+  applyLang(lang) {
+    if (lang !== "fr") lang = "en";
+    this.lang = lang;
+    const root = this.rootEl || document;
+    const d = this.dict[lang];
+    root.querySelectorAll("[data-i18n]").forEach((el) => {
+      const k = el.getAttribute("data-i18n");
+      if (d[k] != null) el.textContent = d[k];
+    });
+    root.querySelectorAll("[data-i18n-html]").forEach((el) => {
+      const k = el.getAttribute("data-i18n-html");
+      if (d[k] != null) el.innerHTML = d[k];
+    });
+    root.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+      const k = el.getAttribute("data-i18n-ph");
+      if (d[k] != null) el.setAttribute("placeholder", d[k]);
+    });
+    root.querySelectorAll("[data-lang-btn]").forEach((b) => {
+      const on = b.getAttribute("data-lang-btn") === lang;
+      b.style.background = on ? "linear-gradient(135deg,var(--accent),var(--accent2))" : "transparent";
+      b.style.color = on ? "var(--onAccent)" : "var(--muted)";
+      b.style.fontWeight = on ? "700" : "500";
+    });
+    try { localStorage.setItem("oe_lang", lang); } catch (e) {}
+    try { document.documentElement.setAttribute("lang", lang); } catch (e) {}
+
+    // decrypt animation on the intro line, on load and on language switch
+    if (this._heroLang !== lang) {
+      this._heroLang = lang;
+      const hi = root.querySelector('[data-i18n="hero_intro"]');
+      if (hi) { hi.setAttribute("data-final", d.hero_intro); this.decryptText(hi); }
+    }
+
+    // terminal: repaint in the new language (instantly if already played)
+    if (this._termBody) {
+      if (this._termDone || this._termPlaying) this.paintTermFinal();
+    }
+  }
+
+  applyTheme(mode) {
+    if (mode !== "dark") mode = "light";
+    this.theme = mode;
+    // tokens must land on :root — body{color:var(--txt)} sits above the component div
+    const root = document.documentElement;
+    const dark = mode === "dark";
+    const v = dark ? {
+      "--bg": "#10161D", "--bg2": "#0B1016",
+      "--panel": "rgba(255,255,255,.04)", "--panel2": "rgba(255,255,255,.065)",
+      "--border": "rgba(191,219,247,.16)",
+      "--txt": "#E1E5F2", "--muted": "#A9BDD0", "--faint": "#8299AD",
+      "--txt2": "#C7D8EC", "--icon": "#8FA9BF",
+      "--surfA": "rgba(255,255,255,.05)", "--surfB": "rgba(255,255,255,.014)",
+      "--line": "rgba(191,219,247,.14)", "--grid": "rgba(191,219,247,.05)",
+      "--track": "rgba(191,219,247,.12)",
+      "--shadow": "rgba(0,0,0,.5)", "--headerbg": "rgba(16,22,29,.78)",
+      "--scrollT": "#1B2531", "--scrollH": "#1F7A8C",
+      "--selTxt": "#10161D", "--onAccent": "#10161D",
+      "--tintA": "rgba(191,219,247,.14)", "--tintB": "rgba(225,229,242,.14)",
+      "--accent": "#BFDBF7", "--accent2": "#E1E5F2"
+    } : {
+      "--bg": "#E1E5F2", "--bg2": "#BFDBF7",
+      "--panel": "rgba(255,255,255,.80)", "--panel2": "#ffffff",
+      "--border": "rgba(2,43,58,.14)",
+      "--txt": "#022B3A", "--muted": "#2C6274", "--faint": "#386D80",
+      "--txt2": "#123F52", "--icon": "#386D80",
+      "--surfA": "rgba(255,255,255,.95)", "--surfB": "rgba(255,255,255,.68)",
+      "--line": "rgba(2,43,58,.12)", "--grid": "rgba(2,43,58,.06)",
+      "--track": "rgba(2,43,58,.10)",
+      "--shadow": "rgba(2,43,58,.13)", "--headerbg": "rgba(225,229,242,.80)",
+      "--scrollT": "#BFDBF7", "--scrollH": "#1C6E7E",
+      "--selTxt": "#ffffff", "--onAccent": "#ffffff",
+      "--tintA": "rgba(28,110,126,.13)", "--tintB": "rgba(2,43,58,.10)",
+      "--accent": "#1C6E7E", "--accent2": "#022B3A"
+    };
+    Object.keys(v).forEach((k) => root.style.setProperty(k, v[k]));
+    if (this.props.accentColor) root.style.setProperty("--accent", this.props.accentColor);
+    if (this.props.accent2Color) root.style.setProperty("--accent2", this.props.accent2Color);
+
+    const host = this.rootEl || document;
+    const sun = host.querySelector("[data-theme-sun]");
+    const moon = host.querySelector("[data-theme-moon]");
+    if (sun) sun.style.display = dark ? "none" : "block";
+    if (moon) moon.style.display = dark ? "block" : "none";
+
+    // the 3D field paints its own tiles — let it follow the theme
+    try {
+      document.documentElement.setAttribute("data-theme", mode);
+      document.body.style.background = v["--bg"];
+    } catch (e) {}
+    try { localStorage.setItem("oe_theme", mode); } catch (e) {}
+    // keep the language pill colours in sync with the new accent
+    if (this.lang) this.applyLang(this.lang);
+  }
+
+  renderVals() {
+    return {
+      rootRef: (el) => { this.rootEl = el; },
+      setEn: () => this.applyLang("en"),
+      setFr: () => this.applyLang("fr"),
+      toggleTheme: () => this.applyTheme(this.theme === "dark" ? "light" : "dark"),
+      sendMsg: () => {
+        const root = this.rootEl || document;
+        const q = (s) => root.querySelector(s);
+        const val = (s) => ((q(s) && q(s).value) || "").trim();
+        const name = val("[data-cf-name]"), mail = val("[data-cf-email]"), subj = val("[data-cf-subj]"), msg = val("[data-cf-msg]");
+        const note = q("[data-cf-note]");
+        const d = this.dict[this.lang || "en"];
+        const noteSet = (txt, ok) => { if (note) { note.textContent = txt; note.style.color = ok ? "#2E7D4F" : "var(--faint)"; } };
+        if (!msg) { noteSet(d.form_need); return; }
+        if (!mail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+          noteSet(d.form_bademail);
+          const e = q("[data-cf-email]"); if (e) e.focus();
+          return;
+        }
+        const btn = q("[data-cf-btn]"), spin = q("[data-cf-spin]"), plane = q("[data-cf-plane]");
+        const busy = (on) => {
+          if (btn) { btn.disabled = on; btn.style.opacity = on ? ".65" : "1"; btn.style.pointerEvents = on ? "none" : "auto"; }
+          if (spin) spin.style.display = on ? "inline-block" : "none";
+          if (plane) plane.style.display = on ? "none" : "block";
+        };
+        const subject = subj || (d.form_subject + (name || "—"));
+        busy(true);
+        noteSet(d.form_sending);
+        fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "service_6ltfw8d",
+            template_id: "template_h7ut7dh",
+            user_id: "v-bDquEv-5aQIKFNr",
+            template_params: { name: name || "—", email: mail, message: msg, subject: subject }
+          })
+        }).then((r) => {
+          if (!r.ok) throw new Error("send failed");
+        }).then(() => {
+          busy(false);
+          noteSet(d.form_sent, true);
+          ["[data-cf-name]", "[data-cf-email]", "[data-cf-subj]", "[data-cf-msg]"].forEach((s) => { const el = q(s); if (el) el.value = ""; });
+        }).catch(() => {
+          busy(false);
+          // relay unreachable — fall back to the visitor's email app
+          const sub = encodeURIComponent(subject);
+          const body = encodeURIComponent(msg + "\n\n" + (name || "") + (mail ? " · " + mail : ""));
+          window.location.href = "mailto:oussama.essalehi@gmail.com?subject=" + sub + "&body=" + body;
+          noteSet(d.form_opened);
+        });
+      }
+    };
+  }
+
+
+  componentDidMount() {
+    const root = this.rootEl || document;
+
+    if (this.props.reduceMotion === true) {
+      root.style.setProperty('--ps', 'paused');
+      root.setAttribute('data-reduce', '1');
+    }
+
+    let saved = "en";
+    try { saved = localStorage.getItem("oe_lang") || "en"; } catch (e) {}
+    this.applyLang(saved);
+    this.typeName();
+    this.initTerminal();
+    this.initReveal();
+
+    let theme = "light";
+    try { theme = localStorage.getItem("oe_theme") || theme; } catch (e) {}
+    this.applyTheme(theme);
+  }
+}
+</script>
+</body>
+</html>
