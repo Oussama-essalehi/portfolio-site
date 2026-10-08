@@ -502,6 +502,10 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
         <div data-reveal="" data-delay="380" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:380ms;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
           <a href="#contact" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14.5px;transition:.3s;box-shadow:0 8px 30px rgba(28,110,126,.25);" style-hover="transform:translateY(-3px);box-shadow:0 14px 40px rgba(28,110,126,.4);" data-i18n="btn_contact">Get in touch →</a>
           <a href="#skills" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);" data-i18n="btn_skills">View skills</a>
+          <a href="./CV_Oussama_Essalehi_DA.pdf" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);color:var(--accent);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
+            <span data-i18n="btn_cv">Download CV</span>
+          </a>
         </div>
       </div>
 
@@ -834,6 +838,7 @@ class Component extends DCLogic {
       hero_intro: "I turn raw, messy data into clear stories and confident decisions, from querying and cleaning to modeling and visualization.",
       btn_contact: "Get in touch →",
       btn_skills: "View skills",
+      btn_cv: "Download CV",
       tile_degree: "DEGREE",
       tile_degree_val: "Master · MIAGE Data Engineering & Protection",
       tile_base: "BASE",
@@ -895,6 +900,7 @@ class Component extends DCLogic {
       hero_intro: "Je transforme des données brutes et désordonnées en récits clairs et décisions sûres, du requêtage et du nettoyage à la modélisation et la visualisation.",
       btn_contact: "Me contacter →",
       btn_skills: "Voir les compétences",
+      btn_cv: "Mon CV",
       tile_degree: "DIPLÔME",
       tile_degree_val: "Master · MIAGE Ingénierie des données et protection",
       tile_base: "LIEU",
