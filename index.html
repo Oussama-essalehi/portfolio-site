@@ -425,18 +425,39 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
   @keyframes nodePing{0%{opacity:0;transform:scale(1);}12%{opacity:.9;transform:scale(1);}28%{opacity:0;transform:scale(1.35);}100%{opacity:0;transform:scale(1.35);}}
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
   @keyframes spinGrad{to{transform:rotate(360deg);}}
-  [data-proj-row]:nth-child(even) > [data-proj-shot]{order:2;}
-  [data-proj-shot]:hover [data-proj-img]{transform:scale(1.04);}
+  [data-pj-chip]{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid var(--border);border-radius:100px;background:var(--panel);color:var(--muted);font-family:var(--mono);font-size:11.5px;letter-spacing:.3px;cursor:pointer;transition:border-color .25s,color .25s,background .25s;}
+  [data-pj-chip]:hover{border-color:var(--accent);color:var(--accent);}
+  [data-pj-chip][aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:var(--onAccent);}
+  [data-pj-chip] .n{opacity:.65;}
+  [data-pj-item]{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0;padding:8px 10px;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--txt);text-align:left;cursor:pointer;font:inherit;transition:background .2s,border-color .2s;}
+  [data-pj-item]:hover{background:var(--panel);}
+  [data-pj-item][aria-selected="true"]{background:var(--tintA);border-color:var(--border);}
+  [data-pj-item] img{width:62px;height:40px;flex-shrink:0;border-radius:7px;object-fit:cover;object-position:top;border:1px solid var(--border);background:var(--track);}
+  [data-pj-item] .tx{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  [data-pj-item] .t{font-family:var(--disp);font-weight:600;font-size:14.5px;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  [data-pj-item] .c{font-family:var(--mono);font-size:10px;letter-spacing:.6px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  [data-pj-item] .i{font-family:var(--mono);font-size:10.5px;color:var(--accent);width:18px;flex-shrink:0;}
+  [data-pj-chip]:focus-visible,[data-pj-item]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  [data-pj-shot]:hover [data-pj-img]{transform:scale(1.03);}
+  [data-pj-list]::-webkit-scrollbar{width:6px;height:6px;}
+  [data-pj-list]::-webkit-scrollbar-thumb{border:none;}
   @media(max-width:860px){
-    [data-proj-row]{grid-template-columns:1fr !important;gap:26px !important;}
-    [data-proj-row] > [data-proj-shot]{order:0 !important;}
+    [data-pj-grid]{grid-template-columns:minmax(0,1fr) !important;}
+    [data-pj-side]{min-height:0 !important;}
+    [data-pj-side-in]{position:static !important;}
+    [data-pj-list]{flex-direction:row !important;overflow-x:auto !important;overflow-y:hidden !important;}
+    [data-pj-item]{width:220px !important;}
+    [data-pj-count]{display:none !important;}
+    [data-pj-filters]{flex-wrap:nowrap !important;overflow-x:auto;padding-bottom:4px;}
+    [data-pj-chip]{flex-shrink:0;}
     #home{grid-template-columns:1fr !important;gap:40px !important;padding-top:118px !important;min-height:auto !important;padding-bottom:60px;}
     [data-about-grid]{grid-template-columns:1fr !important;gap:28px !important;}
     [data-contact-grid]{grid-template-columns:1fr !important;}
     [data-sidenav]{display:none !important;}
   }
   @media(max-width:520px){
-    [data-proj-stats]{gap:10px !important;}
+    [data-pj-stats]{gap:10px !important;}
+    [data-pj-detail]{padding:10px !important;}
     [data-cf-row]{grid-template-columns:1fr !important;}
   }
   @media(max-width:540px){
@@ -687,276 +708,65 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
       </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- PROJECTS · explorer: the list on the left scrolls, so the section keeps the same height however many projects there are.
+         The projects themselves live in the `projects` list of the script at the bottom of this file. -->
     <section id="projects" style="padding:90px 0;">
       <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:14px;">
         <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">04</span>
         <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="proj_h">Projects</h2>
         <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
       </div>
-      <p data-reveal="" data-delay="40" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:40ms;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:0 0 48px;" data-i18n="proj_note">// five projects, all live: click a screenshot to try it</p>
+      <p data-reveal="" data-delay="40" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:40ms;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:0 0 26px;" data-i18n="proj_note">// pick a project · filter by domain · every one is live</p>
 
-      <div style="display:flex;flex-direction:column;gap:clamp(64px,8vw,104px);">
+      <div data-reveal="" data-delay="80" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:80ms;">
+        <div data-pj-filters="" role="group" aria-label="Filter projects" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;"></div>
 
-        <!-- project 01 · SkyPulse -->
-        <article data-proj-row="" data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:center;">
-          <a data-proj-shot="" href="https://skyradar.duckdns.org" target="_blank" rel="noopener noreferrer" aria-label="SkyPulse: live demo" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--panel2);box-shadow:0 22px 50px var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 30px 70px var(--shadow);">
-            <div style="display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#28C840;"></span>
-              <span style="flex:1;min-width:0;margin-left:10px;padding:4px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">skyradar.duckdns.org</span>
-            </div>
-            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--track);">
-              <img data-proj-img="" src="./assets/projects/skypulse.webp" alt="Screenshot of SkyPulse" width="1200" height="750" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1);">
-            </div>
-          </a>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <span style="font-family:var(--disp);font-weight:700;font-size:54px;line-height:1;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1.2px var(--accent);">01</span>
-              <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;line-height:1.5;color:var(--accent);" data-i18n="pr1_cat">REAL-TIME DATA · STREAMING · ML</span>
-            </div>
-            <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.8px;margin:0 0 12px;">SkyPulse</h3>
-            <p style="margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.65;" data-i18n="pr1_desc">Live world air traffic: about 14,000 aircraft streamed from OpenSky through Kafka onto a deck.gl map, archived in an S3 lakehouse modelled with dbt, with streaming anomaly alerts and an ML model that predicts arrival times.</p>
-            <div data-proj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px;">
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr1_s0v">14,000</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr1_s0l">aircraft live</span>
+        <div data-pj-grid="" style="display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:stretch;">
+
+          <!-- list -->
+          <div data-pj-side="" style="position:relative;min-height:340px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));overflow:hidden;">
+            <div data-pj-side-in="" style="position:absolute;inset:0;display:flex;flex-direction:column;">
+              <div style="padding:12px;border-bottom:1px solid var(--border);">
+                <input data-pj-search="" type="search" placeholder="Search a project or a tool…" data-i18n-ph="proj_search" aria-label="Search projects" style="width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);color:var(--txt);font-family:var(--mono);font-size:12px;outline:none;transition:border-color .25s,box-shadow .25s;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--tintA);">
               </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr1_s1v">77</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr1_s1l">dbt tests</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr1_s2v">91</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr1_s2l">quality checks</span>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Python</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">FastAPI</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Kafka</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">dbt</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">DuckDB</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Dagster</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">LightGBM</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">MLflow</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">React</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">deck.gl</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Docker</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="https://skyradar.duckdns.org" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-              <a href="https://github.com/Oussama-essalehi/SkyPulse" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
+              <div data-pj-list="" role="listbox" aria-label="Projects" style="flex:1;min-height:0;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:4px;"></div>
+              <div data-pj-count="" style="padding:10px 16px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--faint);"></div>
             </div>
           </div>
-        </article>
 
-        <!-- project 02 · FlyJack -->
-        <article data-proj-row="" data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:center;">
-          <a data-proj-shot="" href="https://fruitfly-blackjack-web.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="FlyJack: live demo" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--panel2);box-shadow:0 22px 50px var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 30px 70px var(--shadow);">
-            <div style="display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#28C840;"></span>
-              <span style="flex:1;min-width:0;margin-left:10px;padding:4px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">fruitfly-blackjack-web.vercel.app</span>
-            </div>
-            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--track);">
-              <img data-proj-img="" src="./assets/projects/flyjack.webp" alt="Screenshot of FlyJack" width="1200" height="750" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1);">
-            </div>
-          </a>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <span style="font-family:var(--disp);font-weight:700;font-size:54px;line-height:1;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1.2px var(--accent);">02</span>
-              <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;line-height:1.5;color:var(--accent);" data-i18n="pr2_cat">COMPUTATIONAL NEUROSCIENCE · 3D WEB</span>
-            </div>
-            <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.8px;margin:0 0 12px;">FlyJack</h3>
-            <p style="margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.65;" data-i18n="pr2_desc">A real fruit fly brain, rebuilt from the MaleCNS connectome, learns blackjack and poker through dopamine alone, shown live at a 3D neon casino table next to its firing neurons.</p>
-            <div data-proj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px;">
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr2_s0v">4,406</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr2_s0l">real neurons wired</span>
+          <!-- selected project -->
+          <div data-pj-detail="" style="min-width:0;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:16px;">
+            <a data-pj-shot="" href="#" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--panel2);transition:border-color .3s;" style-hover="border-color:var(--accent);">
+              <div style="display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid var(--border);background:var(--panel);">
+                <span style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#28C840;"></span>
+                <span data-pj-host="" style="flex:1;min-width:0;margin-left:9px;padding:3px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></span>
               </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr2_s1v">811k</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr2_s1l">synapses</span>
+              <div style="aspect-ratio:2/1;overflow:hidden;background:var(--track);">
+                <img data-pj-img="" alt="" width="1200" height="750" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .25s;">
               </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr2_s2v">2</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr2_s2l">games learned</span>
+            </a>
+            <div data-pj-body="" style="padding:20px 8px 6px;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+                <span data-pj-num="" style="font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;letter-spacing:-1.5px;color:transparent;-webkit-text-stroke:1.1px var(--accent);"></span>
+                <span data-pj-cat="" style="flex:1;min-width:0;font-family:var(--mono);font-size:10.5px;letter-spacing:1.3px;line-height:1.5;color:var(--accent);"></span>
+                <span data-pj-pos="" style="font-family:var(--mono);font-size:11px;color:var(--faint);white-space:nowrap;"></span>
+                <button onClick="{{ pjPrev }}" aria-label="Previous project" style="display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border);border-radius:100px;background:var(--panel);color:var(--txt2);cursor:pointer;transition:border-color .25s,color .25s;" style-hover="border-color:var(--accent);color:var(--accent);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+                <button onClick="{{ pjNext }}" aria-label="Next project" style="display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border);border-radius:100px;background:var(--panel);color:var(--txt2);cursor:pointer;transition:border-color .25s,color .25s;" style-hover="border-color:var(--accent);color:var(--accent);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
               </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">JavaScript</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Three.js</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Python</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">NumPy</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">pandas</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">GitHub Actions</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Vercel</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="https://fruitfly-blackjack-web.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-              <a href="https://github.com/Oussama-essalehi/FruitFly---blackJack" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
+              <h3 data-pj-title="" style="font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.2vw,27px);letter-spacing:-.7px;margin:0 0 8px;"></h3>
+              <p data-pj-desc="" style="margin:0 0 18px;color:var(--muted);font-size:14.5px;line-height:1.6;"></p>
+              <div data-pj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px;"></div>
+              <div data-pj-tech="" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;"></div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;">
+                <a data-pj-demo="" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+                <a data-pj-code="" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
+              </div>
             </div>
           </div>
-        </article>
 
-        <!-- project 03 · E-commerce Data Platform -->
-        <article data-proj-row="" data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:center;">
-          <a data-proj-shot="" href="https://ecommerce-data-platform-seven.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="E-commerce Data Platform: live demo" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--panel2);box-shadow:0 22px 50px var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 30px 70px var(--shadow);">
-            <div style="display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#28C840;"></span>
-              <span style="flex:1;min-width:0;margin-left:10px;padding:4px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">ecommerce-data-platform-seven.vercel.app</span>
-            </div>
-            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--track);">
-              <img data-proj-img="" src="./assets/projects/ecommerce.webp" alt="Screenshot of E-commerce Data Platform" width="1200" height="750" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1);">
-            </div>
-          </a>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <span style="font-family:var(--disp);font-weight:700;font-size:54px;line-height:1;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1.2px var(--accent);">03</span>
-              <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;line-height:1.5;color:var(--accent);" data-i18n="pr3_cat">DATA ENGINEERING · BATCH &amp; STREAMING</span>
-            </div>
-            <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.8px;margin:0 0 12px;" data-i18n="pr3_title">E-commerce Data Platform</h3>
-            <p style="margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.65;" data-i18n="pr3_desc">End-to-end platform for a fictional French online shop: three sources ingested in batch and Kafka streaming into a medallion Delta Lake, then a dbt star schema in PostgreSQL feeding Power BI and a live web dashboard.</p>
-            <div data-proj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px;">
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr3_s0v">3</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr3_s0l">sources, batch + stream</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr3_s1v">88</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr3_s1l">data quality checks</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr3_s2v">83</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr3_s2l">dbt tests</span>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Python</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Kafka</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Spark</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Delta Lake</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Airflow</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">dbt</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">PostgreSQL</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Great Expectations</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Power BI</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Docker</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="https://ecommerce-data-platform-seven.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-              <a href="https://github.com/Oussama-essalehi/ecommerce-data-platform" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
-            </div>
-          </div>
-        </article>
-
-        <!-- project 04 · VéloScope Toulouse -->
-        <article data-proj-row="" data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:center;">
-          <a data-proj-shot="" href="https://toulouse-mobilite.streamlit.app/" target="_blank" rel="noopener noreferrer" aria-label="VéloScope Toulouse: live demo" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--panel2);box-shadow:0 22px 50px var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 30px 70px var(--shadow);">
-            <div style="display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#28C840;"></span>
-              <span style="flex:1;min-width:0;margin-left:10px;padding:4px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">toulouse-mobilite.streamlit.app</span>
-            </div>
-            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--track);">
-              <img data-proj-img="" src="./assets/projects/veloscope.webp" alt="Screenshot of VéloScope Toulouse" width="1200" height="750" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1);">
-            </div>
-          </a>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <span style="font-family:var(--disp);font-weight:700;font-size:54px;line-height:1;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1.2px var(--accent);">04</span>
-              <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;line-height:1.5;color:var(--accent);" data-i18n="pr4_cat">LAKEHOUSE · MACHINE LEARNING · BI</span>
-            </div>
-            <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.8px;margin:0 0 12px;">VéloScope Toulouse</h3>
-            <p style="margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.65;" data-i18n="pr4_desc">Toulouse's bike-share network collected every 15 minutes on Databricks and refined in a medallion lakehouse, with station clustering, 24-hour demand forecasts and bike rebalancing advice before each rush hour.</p>
-            <div data-proj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px;">
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr4_s0v">460+</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr4_s0l">stations tracked</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr4_s1v">15 min</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr4_s1l">collection cycle</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr4_s2v">24 h</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr4_s2l">forecast horizon</span>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Databricks</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">PySpark</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Delta Lake</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">scikit-learn</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">MLflow</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Streamlit</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Power BI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="https://toulouse-mobilite.streamlit.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-              <a href="https://github.com/Oussama-essalehi/mobilite-urbaine-databricks" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
-            </div>
-          </div>
-        </article>
-
-        <!-- project 05 · Immoscope France -->
-        <article data-proj-row="" data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:center;">
-          <a data-proj-shot="" href="https://immoscope-france.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Immoscope France: live demo" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--panel2);box-shadow:0 22px 50px var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 30px 70px var(--shadow);">
-            <div style="display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--panel);">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></span>
-              <span style="width:10px;height:10px;border-radius:50%;background:#28C840;"></span>
-              <span style="flex:1;min-width:0;margin-left:10px;padding:4px 12px;border-radius:100px;background:var(--track);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">immoscope-france.vercel.app</span>
-            </div>
-            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--track);">
-              <img data-proj-img="" src="./assets/projects/immoscope.webp" alt="Screenshot of Immoscope France" width="1200" height="750" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1);">
-            </div>
-          </a>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-              <span style="font-family:var(--disp);font-weight:700;font-size:54px;line-height:1;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1.2px var(--accent);">05</span>
-              <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;line-height:1.5;color:var(--accent);" data-i18n="pr5_cat">DATA ANALYSIS · STATISTICS · BI</span>
-            </div>
-            <h3 style="font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.8px;margin:0 0 12px;">Immoscope France</h3>
-            <p style="margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.65;" data-i18n="pr5_desc">3.8 million French property sales from 2021 to 2025, cleaned from raw public DVF files, modelled in PostgreSQL and tested statistically to measure how rising rates hit the market, served as a Power BI report and a bilingual React map.</p>
-            <div data-proj-stats="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px;">
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr5_s0v">3.8M</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr5_s0l">sales analysed</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr5_s1v">18M</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr5_s1l">raw rows cleaned</span>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:2px solid var(--accent);">
-                <span style="font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.5px;color:var(--txt);" data-i18n="pr5_s2v">10</span>
-                <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" data-i18n="pr5_s2l">regions covered</span>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;">
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Python</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">pandas</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">SciPy</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">PostgreSQL</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">SQL</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Power BI</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">React</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">TypeScript</span>
-              <span style="padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;">Leaflet</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="https://immoscope-france.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-i18n="proj_demo">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-              <a href="https://github.com/Oussama-essalehi/immoscope-france" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
-            </div>
-          </div>
-        </article>
-
+        </div>
       </div>
     </section>
 
@@ -1139,50 +949,17 @@ class Component extends DCLogic {
       exp1_b4: "Managed the company ERP and its database, including bug fixes and corrections",
       exp1_t6: "AI agents",
       proj_h: "Projects",
-      proj_note: "// five projects, all live: click a screenshot to try it",
+      proj_note: "// pick a project · filter by domain · every one is live",
       proj_demo: "Live demo",
       proj_code: "Source code",
-      pr1_cat: "REAL-TIME DATA · STREAMING · ML",
-      pr1_desc: "Live world air traffic: about 14,000 aircraft streamed from OpenSky through Kafka onto a deck.gl map, archived in an S3 lakehouse modelled with dbt, with streaming anomaly alerts and an ML model that predicts arrival times.",
-      pr1_s0v: "14,000",
-      pr1_s0l: "aircraft live",
-      pr1_s1v: "77",
-      pr1_s1l: "dbt tests",
-      pr1_s2v: "91",
-      pr1_s2l: "quality checks",
-      pr2_cat: "COMPUTATIONAL NEUROSCIENCE · 3D WEB",
-      pr2_desc: "A real fruit fly brain, rebuilt from the MaleCNS connectome, learns blackjack and poker through dopamine alone, shown live at a 3D neon casino table next to its firing neurons.",
-      pr2_s0v: "4,406",
-      pr2_s0l: "real neurons wired",
-      pr2_s1v: "811k",
-      pr2_s1l: "synapses",
-      pr2_s2v: "2",
-      pr2_s2l: "games learned",
-      pr3_cat: "DATA ENGINEERING · BATCH & STREAMING",
-      pr3_desc: "End-to-end platform for a fictional French online shop: three sources ingested in batch and Kafka streaming into a medallion Delta Lake, then a dbt star schema in PostgreSQL feeding Power BI and a live web dashboard.",
-      pr3_title: "E-commerce Data Platform",
-      pr3_s0v: "3",
-      pr3_s0l: "sources, batch + stream",
-      pr3_s1v: "88",
-      pr3_s1l: "data quality checks",
-      pr3_s2v: "83",
-      pr3_s2l: "dbt tests",
-      pr4_cat: "LAKEHOUSE · MACHINE LEARNING · BI",
-      pr4_desc: "Toulouse's bike-share network collected every 15 minutes on Databricks and refined in a medallion lakehouse, with station clustering, 24-hour demand forecasts and bike rebalancing advice before each rush hour.",
-      pr4_s0v: "460+",
-      pr4_s0l: "stations tracked",
-      pr4_s1v: "15 min",
-      pr4_s1l: "collection cycle",
-      pr4_s2v: "24 h",
-      pr4_s2l: "forecast horizon",
-      pr5_cat: "DATA ANALYSIS · STATISTICS · BI",
-      pr5_desc: "3.8 million French property sales from 2021 to 2025, cleaned from raw public DVF files, modelled in PostgreSQL and tested statistically to measure how rising rates hit the market, served as a Power BI report and a bilingual React map.",
-      pr5_s0v: "3.8M",
-      pr5_s0l: "sales analysed",
-      pr5_s1v: "18M",
-      pr5_s1l: "raw rows cleaned",
-      pr5_s2v: "10",
-      pr5_s2l: "regions covered",
+      proj_search: "Search a project or a tool…",
+      proj_count: "{n} of {t} projects",
+      proj_none: "No project matches this search.",
+      pj_all: "All",
+      pj_de: "Data Engineering",
+      pj_ml: "Machine Learning",
+      pj_bi: "Analytics & BI",
+      pj_web: "Web & 3D",
       skills_h: "Skills",
       skills_note: "// programming · ai & ml · databases · web · data & bi · cloud",
       sk_prog: "Programming",
@@ -1246,50 +1023,17 @@ class Component extends DCLogic {
       exp1_b4: "Gestion de l'ERP de l'entreprise et de sa base de données, avec correction des bugs",
       exp1_t6: "Agents IA",
       proj_h: "Projets",
-      proj_note: "// cinq projets, tous en ligne : cliquez sur une capture pour l'essayer",
+      proj_note: "// choisissez un projet · filtrez par domaine · tous sont en ligne",
       proj_demo: "Voir la démo",
       proj_code: "Code source",
-      pr1_cat: "TEMPS RÉEL · STREAMING · ML",
-      pr1_desc: "Le trafic aérien mondial en direct : environ 14 000 avions diffusés depuis OpenSky via Kafka sur une carte deck.gl, historisés dans un lakehouse S3 modélisé avec dbt, avec alertes d'anomalies en streaming et un modèle de ML qui prédit l'heure d'arrivée.",
-      pr1_s0v: "14 000",
-      pr1_s0l: "avions en direct",
-      pr1_s1v: "77",
-      pr1_s1l: "tests dbt",
-      pr1_s2v: "91",
-      pr1_s2l: "contrôles qualité",
-      pr2_cat: "NEUROSCIENCES · WEB 3D",
-      pr2_desc: "Le vrai cerveau d'une mouche, reconstruit à partir du connectome MaleCNS, apprend le blackjack et le poker par la seule dopamine, en direct à une table de casino 3D, à côté de ses neurones qui s'activent.",
-      pr2_s0v: "4 406",
-      pr2_s0l: "neurones réels câblés",
-      pr2_s1v: "811 k",
-      pr2_s1l: "synapses",
-      pr2_s2v: "2",
-      pr2_s2l: "jeux appris",
-      pr3_cat: "DATA ENGINEERING · BATCH & STREAMING",
-      pr3_desc: "Plateforme de bout en bout pour une boutique en ligne fictive : trois sources ingérées en batch et en streaming Kafka dans un Delta Lake médaillon, puis un schéma en étoile dbt sur PostgreSQL qui alimente Power BI et un dashboard web en ligne.",
-      pr3_title: "Plateforme data e-commerce",
-      pr3_s0v: "3",
-      pr3_s0l: "sources, batch + stream",
-      pr3_s1v: "88",
-      pr3_s1l: "contrôles qualité",
-      pr3_s2v: "83",
-      pr3_s2l: "tests dbt",
-      pr4_cat: "LAKEHOUSE · MACHINE LEARNING · BI",
-      pr4_desc: "Le réseau VélôToulouse collecté toutes les 15 minutes sur Databricks et affiné dans un lakehouse médaillon, avec familles de stations, prévisions à 24 h et conseils de rééquilibrage avant chaque heure de pointe.",
-      pr4_s0v: "460+",
-      pr4_s0l: "stations suivies",
-      pr4_s1v: "15 min",
-      pr4_s1l: "cycle de collecte",
-      pr4_s2v: "24 h",
-      pr4_s2l: "horizon de prévision",
-      pr5_cat: "ANALYSE DE DONNÉES · STATISTIQUES · BI",
-      pr5_desc: "3,8 millions de ventes immobilières de 2021 à 2025, nettoyées depuis les fichiers publics DVF, modélisées dans PostgreSQL et testées statistiquement pour mesurer l'effet de la hausse des taux, restituées dans un rapport Power BI et un site React bilingue.",
-      pr5_s0v: "3,8 M",
-      pr5_s0l: "ventes analysées",
-      pr5_s1v: "18 M",
-      pr5_s1l: "lignes brutes nettoyées",
-      pr5_s2v: "10",
-      pr5_s2l: "régions couvertes",
+      proj_search: "Chercher un projet ou un outil…",
+      proj_count: "{n} projets sur {t}",
+      proj_none: "Aucun projet ne correspond à cette recherche.",
+      pj_all: "Tous",
+      pj_de: "Data Engineering",
+      pj_ml: "Machine Learning",
+      pj_bi: "Analyse & BI",
+      pj_web: "Web & 3D",
       skills_h: "Compétences",
       skills_note: "// programmation · ia & ml · bases de données · web · data & bi · cloud",
       sk_prog: "Programmation",
@@ -1327,6 +1071,220 @@ class Component extends DCLogic {
       lbl_location: "LOCALISATION"
     }
   };
+
+  /* Projects shown in the explorer (section 04), in display order.
+     To add one: copy an entry, put its screenshot (1200×750 .webp) in assets/projects/ and set `img` to its name.
+     Text can be a plain string, or { en, fr } when it differs between languages.
+     tags: de = Data Engineering, ml = Machine Learning, bi = Analytics & BI, web = Web & 3D */
+  projects = [
+    {
+      title: "SkyPulse",
+      img: "skypulse",
+      demo: "https://skyradar.duckdns.org",
+      code: "https://github.com/Oussama-essalehi/SkyPulse",
+      tags: ["de", "ml", "web"],
+      cat: { en: "REAL-TIME DATA · STREAMING · ML", fr: "TEMPS RÉEL · STREAMING · ML" },
+      desc: { en: "Live world air traffic: about 14,000 aircraft streamed from OpenSky through Kafka onto a deck.gl map, archived in an S3 lakehouse modelled with dbt, with streaming anomaly alerts and an ML model that predicts arrival times.", fr: "Le trafic aérien mondial en direct : environ 14 000 avions diffusés depuis OpenSky via Kafka sur une carte deck.gl, historisés dans un lakehouse S3 modélisé avec dbt, avec alertes d'anomalies en streaming et un modèle de ML qui prédit l'heure d'arrivée." },
+      stats: [[{ en: "14,000", fr: "14 000" }, { en: "aircraft live", fr: "avions en direct" }], ["77", { en: "dbt tests", fr: "tests dbt" }], ["91", { en: "quality checks", fr: "contrôles qualité" }]],
+      tech: ["Python", "FastAPI", "Kafka", "dbt", "DuckDB", "Dagster", "LightGBM", "MLflow", "React", "deck.gl", "Docker"]
+    },
+    {
+      title: "FlyJack",
+      img: "flyjack",
+      demo: "https://fruitfly-blackjack-web.vercel.app/",
+      code: "https://github.com/Oussama-essalehi/FruitFly---blackJack",
+      tags: ["ml", "web"],
+      cat: { en: "COMPUTATIONAL NEUROSCIENCE · 3D WEB", fr: "NEUROSCIENCES · WEB 3D" },
+      desc: { en: "A real fruit fly brain, rebuilt from the MaleCNS connectome, learns blackjack and poker through dopamine alone, shown live at a 3D neon casino table next to its firing neurons.", fr: "Le vrai cerveau d'une mouche, reconstruit à partir du connectome MaleCNS, apprend le blackjack et le poker par la seule dopamine, en direct à une table de casino 3D, à côté de ses neurones qui s'activent." },
+      stats: [[{ en: "4,406", fr: "4 406" }, { en: "real neurons wired", fr: "neurones réels câblés" }], [{ en: "811k", fr: "811 k" }, "synapses"], ["2", { en: "games learned", fr: "jeux appris" }]],
+      tech: ["JavaScript", "Three.js", "Python", "NumPy", "pandas", "GitHub Actions", "Vercel"]
+    },
+    {
+      title: { en: "E-commerce Data Platform", fr: "Plateforme data e-commerce" },
+      img: "ecommerce",
+      demo: "https://ecommerce-data-platform-seven.vercel.app/",
+      code: "https://github.com/Oussama-essalehi/ecommerce-data-platform",
+      tags: ["de", "bi"],
+      cat: "DATA ENGINEERING · BATCH & STREAMING",
+      desc: { en: "End-to-end platform for a fictional French online shop: three sources ingested in batch and Kafka streaming into a medallion Delta Lake, then a dbt star schema in PostgreSQL feeding Power BI and a live web dashboard.", fr: "Plateforme de bout en bout pour une boutique en ligne fictive : trois sources ingérées en batch et en streaming Kafka dans un Delta Lake médaillon, puis un schéma en étoile dbt sur PostgreSQL qui alimente Power BI et un dashboard web en ligne." },
+      stats: [["3", "sources, batch + stream"], ["88", { en: "data quality checks", fr: "contrôles qualité" }], ["83", { en: "dbt tests", fr: "tests dbt" }]],
+      tech: ["Python", "Kafka", "Spark", "Delta Lake", "Airflow", "dbt", "PostgreSQL", "Great Expectations", "Power BI", "Docker"]
+    },
+    {
+      title: "VéloScope Toulouse",
+      img: "veloscope",
+      demo: "https://toulouse-mobilite.streamlit.app/",
+      code: "https://github.com/Oussama-essalehi/mobilite-urbaine-databricks",
+      tags: ["de", "ml", "bi"],
+      cat: "LAKEHOUSE · MACHINE LEARNING · BI",
+      desc: { en: "Toulouse's bike-share network collected every 15 minutes on Databricks and refined in a medallion lakehouse, with station clustering, 24-hour demand forecasts and bike rebalancing advice before each rush hour.", fr: "Le réseau VélôToulouse collecté toutes les 15 minutes sur Databricks et affiné dans un lakehouse médaillon, avec familles de stations, prévisions à 24 h et conseils de rééquilibrage avant chaque heure de pointe." },
+      stats: [["460+", { en: "stations tracked", fr: "stations suivies" }], ["15 min", { en: "collection cycle", fr: "cycle de collecte" }], ["24 h", { en: "forecast horizon", fr: "horizon de prévision" }]],
+      tech: ["Databricks", "PySpark", "Delta Lake", "scikit-learn", "MLflow", "Streamlit", "Power BI"]
+    },
+    {
+      title: "Immoscope France",
+      img: "immoscope",
+      demo: "https://immoscope-france.vercel.app/",
+      code: "https://github.com/Oussama-essalehi/immoscope-france",
+      tags: ["bi", "web"],
+      cat: { en: "DATA ANALYSIS · STATISTICS · BI", fr: "ANALYSE DE DONNÉES · STATISTIQUES · BI" },
+      desc: { en: "3.8 million French property sales from 2021 to 2025, cleaned from raw public DVF files, modelled in PostgreSQL and tested statistically to measure how rising rates hit the market, served as a Power BI report and a bilingual React map.", fr: "3,8 millions de ventes immobilières de 2021 à 2025, nettoyées depuis les fichiers publics DVF, modélisées dans PostgreSQL et testées statistiquement pour mesurer l'effet de la hausse des taux, restituées dans un rapport Power BI et un site React bilingue." },
+      stats: [[{ en: "3.8M", fr: "3,8 M" }, { en: "sales analysed", fr: "ventes analysées" }], [{ en: "18M", fr: "18 M" }, { en: "raw rows cleaned", fr: "lignes brutes nettoyées" }], ["10", { en: "regions covered", fr: "régions couvertes" }]],
+      tech: ["Python", "pandas", "SciPy", "PostgreSQL", "SQL", "Power BI", "React", "TypeScript", "Leaflet"]
+    }
+  ];
+
+  pjTags = ["de", "ml", "bi", "web"];
+
+  tr(v) {
+    if (v == null) return "";
+    return typeof v === "string" ? v : (v[this.lang || "en"] || v.en);
+  }
+
+  pjEl(tag, attrs, text) {
+    const el = document.createElement(tag);
+    Object.keys(attrs || {}).forEach((k) => el.setAttribute(k, attrs[k]));
+    if (text != null) el.textContent = text;
+    return el;
+  }
+
+  pjVisible() {
+    const st = this._pj;
+    const q = st.query.trim().toLowerCase();
+    return this.projects.filter((p) => {
+      if (st.filter !== "all" && p.tags.indexOf(st.filter) === -1) return false;
+      if (!q) return true;
+      return [this.tr(p.title), this.tr(p.cat)].concat(p.tech).join(" ").toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  initProjects() {
+    const root = this.rootEl || document;
+    const list = root.querySelector("[data-pj-list]");
+    if (!list || this._pj) return;
+    this._pj = { root: root, list: list, filter: "all", query: "", active: 0 };
+    const search = root.querySelector("[data-pj-search]");
+    if (search) search.addEventListener("input", () => { this._pj.query = search.value; this.renderProjects(); });
+    // arrow keys move through the list, like a native listbox
+    list.addEventListener("keydown", (e) => {
+      const keys = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+      if (!keys[e.key]) return;
+      e.preventDefault();
+      this.stepProject(keys[e.key], true);
+    });
+    this.renderProjects();
+  }
+
+  renderProjects() {
+    const st = this._pj;
+    if (!st) return;
+    const d = this.dict[this.lang || "en"];
+    const vis = this.pjVisible();
+    if (vis.length && vis.indexOf(this.projects[st.active]) === -1) st.active = this.projects.indexOf(vis[0]);
+
+    const bar = st.root.querySelector("[data-pj-filters]");
+    bar.innerHTML = "";
+    ["all"].concat(this.pjTags).forEach((k) => {
+      const n = k === "all" ? this.projects.length : this.projects.filter((p) => p.tags.indexOf(k) !== -1).length;
+      if (!n) return;
+      const b = this.pjEl("button", { "data-pj-chip": "", type: "button", "aria-pressed": String(st.filter === k) }, d["pj_" + k]);
+      b.appendChild(this.pjEl("span", { class: "n" }, String(n)));
+      b.addEventListener("click", () => { st.filter = k; this.renderProjects(); });
+      bar.appendChild(b);
+    });
+
+    st.list.innerHTML = "";
+    if (!vis.length) st.list.appendChild(this.pjEl("p", { style: "margin:10px;color:var(--faint);font-family:var(--mono);font-size:12px;line-height:1.6;" }, d.proj_none));
+    vis.forEach((p) => {
+      const i = this.projects.indexOf(p);
+      const on = i === st.active;
+      const b = this.pjEl("button", { "data-pj-item": "", type: "button", role: "option", "aria-selected": String(on), tabindex: on ? "0" : "-1" });
+      b.appendChild(this.pjEl("span", { class: "i" }, String(i + 1).padStart(2, "0")));
+      b.appendChild(this.pjEl("img", { src: "./assets/projects/" + p.img + ".webp", alt: "", loading: "lazy", decoding: "async" }));
+      const tx = this.pjEl("span", { class: "tx" });
+      tx.appendChild(this.pjEl("span", { class: "t" }, this.tr(p.title)));
+      tx.appendChild(this.pjEl("span", { class: "c" }, this.tr(p.cat).split(" · ")[0]));
+      b.appendChild(tx);
+      b.addEventListener("click", () => this.showProject(i, true));
+      st.list.appendChild(b);
+    });
+    const count = st.root.querySelector("[data-pj-count]");
+    if (count) count.textContent = d.proj_count.replace("{n}", vis.length).replace("{t}", this.projects.length);
+    this.paintProject(false);
+  }
+
+  showProject(i, animate) {
+    const st = this._pj;
+    st.active = i;
+    st.list.querySelectorAll("[data-pj-item]").forEach((b) => {
+      const on = b.querySelector(".i").textContent === String(i + 1).padStart(2, "0");
+      b.setAttribute("aria-selected", String(on));
+      b.setAttribute("tabindex", on ? "0" : "-1");
+      if (on) {
+        // scroll the list itself (never the page) so the selected project stays visible
+        const l = st.list, lr = l.getBoundingClientRect(), br = b.getBoundingClientRect();
+        if (br.top < lr.top) l.scrollTop += br.top - lr.top - 8;
+        else if (br.bottom > lr.bottom) l.scrollTop += br.bottom - lr.bottom + 8;
+        if (br.left < lr.left) l.scrollLeft += br.left - lr.left - 8;
+        else if (br.right > lr.right) l.scrollLeft += br.right - lr.right + 8;
+      }
+    });
+    this.paintProject(animate);
+  }
+
+  stepProject(dir, focus) {
+    const st = this._pj;
+    const vis = this.pjVisible();
+    if (!vis.length) return;
+    const at = vis.indexOf(this.projects[st.active]);
+    const next = vis[(at + dir + vis.length) % vis.length];
+    this.showProject(this.projects.indexOf(next), true);
+    if (focus) { const b = st.list.querySelector('[aria-selected="true"]'); if (b) b.focus(); }
+  }
+
+  paintProject(animate) {
+    const st = this._pj;
+    const p = this.projects[st.active];
+    const q = (s) => st.root.querySelector(s);
+    const vis = this.pjVisible();
+    const title = this.tr(p.title);
+    const host = p.demo.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    q("[data-pj-shot]").href = p.demo;
+    q("[data-pj-shot]").setAttribute("aria-label", title);
+    q("[data-pj-host]").textContent = host;
+    const img = q("[data-pj-img]");
+    const src = "./assets/projects/" + p.img + ".webp";
+    if (img.getAttribute("src") !== src) {
+      img.style.opacity = "0";
+      img.onload = () => { img.style.opacity = "1"; };
+      img.setAttribute("src", src);
+    }
+    img.alt = title;
+    q("[data-pj-num]").textContent = String(st.active + 1).padStart(2, "0");
+    q("[data-pj-cat]").textContent = this.tr(p.cat);
+    const at = vis.indexOf(p);
+    q("[data-pj-pos]").textContent = at === -1 ? "" : (at + 1) + " / " + vis.length;
+    q("[data-pj-title]").textContent = title;
+    q("[data-pj-desc]").textContent = this.tr(p.desc);
+    q("[data-pj-demo]").href = p.demo;
+    q("[data-pj-code]").href = p.code;
+
+    const stats = q("[data-pj-stats]");
+    stats.innerHTML = "";
+    p.stats.forEach((s) => {
+      const c = this.pjEl("div", { style: "display:flex;flex-direction:column;gap:3px;min-width:0;padding-left:12px;border-left:2px solid var(--accent);" });
+      c.appendChild(this.pjEl("span", { style: "font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:-.5px;color:var(--txt);" }, this.tr(s[0])));
+      c.appendChild(this.pjEl("span", { style: "font-family:var(--mono);font-size:10.5px;letter-spacing:.3px;color:var(--faint);" }, this.tr(s[1])));
+      stats.appendChild(c);
+    });
+    const tech = q("[data-pj-tech]");
+    tech.innerHTML = "";
+    p.tech.forEach((t) => tech.appendChild(this.pjEl("span", { style: "padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--panel);font-family:var(--mono);font-size:11.5px;color:var(--txt2);white-space:nowrap;" }, t)));
+
+    if (animate && !this.noMotion()) {
+      q("[data-pj-body]").animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
+    }
+  }
 
   termLines(lang) {
     return lang === "fr" ? [
@@ -1569,6 +1527,9 @@ class Component extends DCLogic {
       if (hi) { hi.setAttribute("data-final", d.hero_intro); this.decryptText(hi); }
     }
 
+    // projects explorer: repaint in the new language
+    this.renderProjects();
+
     // terminal: repaint in the new language (instantly if already played)
     if (this._termBody) {
       if (this._termDone || this._termPlaying) this.paintTermFinal();
@@ -1636,6 +1597,8 @@ class Component extends DCLogic {
       setEn: () => this.applyLang("en"),
       setFr: () => this.applyLang("fr"),
       toggleTheme: () => this.applyTheme(this.theme === "dark" ? "light" : "dark"),
+      pjPrev: () => this.stepProject(-1),
+      pjNext: () => this.stepProject(1),
       sendMsg: () => {
         const root = this.rootEl || document;
         const q = (s) => root.querySelector(s);
@@ -1700,6 +1663,7 @@ class Component extends DCLogic {
     this.applyLang(saved);
     this.typeName();
     this.initTerminal();
+    this.initProjects();
     this.initReveal();
 
     let theme = "light";
