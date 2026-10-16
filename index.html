@@ -481,6 +481,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     <a href="#about" title="About" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
     <a href="#formation" title="Formation" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
     <a href="#experience" title="Experience" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
+    <a href="#projects" title="Projects" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
     <a href="#skills" title="Skills" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
     <a href="#contact" title="Contact" style="width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.5;transition:opacity .3s,background .3s,transform .3s;" style-hover="opacity:1;background:var(--accent);transform:scale(1.3);"></a>
   </nav>
@@ -681,10 +682,161 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
       </div>
     </section>
 
+    <!-- PROJECTS -->
+    <section id="projects" style="padding:90px 0;">
+      <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">04</span>
+        <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="proj_h">Projects</h2>
+        <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
+      </div>
+      <p data-reveal="" data-delay="40" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:40ms;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:0 0 34px;" data-i18n="proj_note">// data engineering · machine learning · generative ai</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:22px;">
+
+        <!-- project · E-commerce Data Platform -->
+        <article data-reveal="" data-delay="60" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:60ms;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--surfA),var(--surfB));transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-4px);box-shadow:0 18px 40px var(--shadow);">
+          <div style="position:relative;height:178px;background:radial-gradient(240px 150px at 88% 0%,rgba(127,219,202,.16),transparent 70%),#04222D;border-bottom:1px solid var(--border);">
+            <span style="position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.4px;color:#7FA0B5;">~/ecommerce-data-platform</span>
+            <svg viewBox="0 0 320 150" width="100%" height="100%" aria-hidden="true" style="display:block;box-sizing:border-box;padding:24px 4px 4px;font-family:var(--mono);">
+              <g font-size="9" text-anchor="middle">
+                <rect x="14" y="26" width="48" height="20" rx="5" fill="rgba(191,219,247,.06)" stroke="#7FA0B5"></rect><text x="38" y="39.5" fill="#BFDBF7">API</text>
+                <rect x="14" y="58" width="48" height="20" rx="5" fill="rgba(191,219,247,.06)" stroke="#7FA0B5"></rect><text x="38" y="71.5" fill="#BFDBF7">CSV</text>
+                <rect x="14" y="90" width="48" height="20" rx="5" fill="rgba(191,219,247,.06)" stroke="#7FA0B5"></rect><text x="38" y="103.5" fill="#BFDBF7">Kafka</text>
+                <path d="M62 36 C78 36 78 68 92 68 M62 68 H92 M62 100 C78 100 78 68 92 68" fill="none" stroke="rgba(191,219,247,.35)" stroke-width="1.2"></path>
+                <rect x="92" y="56" width="52" height="24" rx="6" fill="rgba(127,219,202,.10)" stroke="#7FDBCA"></rect><text x="118" y="71.5" fill="#7FDBCA">Airflow</text>
+                <path d="M144 68 C156 68 154 36 166 36 M144 68 H166 M144 68 C156 68 154 100 166 100" fill="none" stroke="rgba(191,219,247,.35)" stroke-width="1.2"></path>
+                <rect x="166" y="26" width="58" height="20" rx="5" fill="rgba(192,138,91,.14)" stroke="#C08A5B"></rect><text x="195" y="39.5" fill="#E0B28A">bronze</text>
+                <rect x="166" y="58" width="58" height="20" rx="5" fill="rgba(169,180,191,.14)" stroke="#A9B4BF"></rect><text x="195" y="71.5" fill="#D3DBE3">silver</text>
+                <rect x="166" y="90" width="58" height="20" rx="5" fill="rgba(226,184,75,.14)" stroke="#E2B84B"></rect><text x="195" y="103.5" fill="#F0D38A">gold</text>
+                <path d="M224 100 C242 100 248 68 265 68" fill="none" stroke="rgba(226,184,75,.6)" stroke-width="1.2"></path>
+                <path d="M278 68 L278 40 M278 68 L306 68 M278 68 L278 96" stroke="rgba(127,219,202,.45)" stroke-width="1.2"></path>
+                <circle cx="278" cy="40" r="6" fill="#04222D" stroke="#7FA0B5"></circle>
+                <circle cx="306" cy="68" r="6" fill="#04222D" stroke="#7FA0B5"></circle>
+                <circle cx="278" cy="96" r="6" fill="#04222D" stroke="#7FA0B5"></circle>
+                <circle cx="278" cy="68" r="13" fill="#0A3340" stroke="#7FDBCA"></circle><text x="278" y="71" font-size="7.5" fill="#7FDBCA">fact</text>
+                <text x="314" y="124" font-size="8" text-anchor="end" fill="#7FA0B5">dbt · star schema</text>
+              </g>
+            </svg>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;padding:22px 24px 22px;">
+            <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;color:var(--faint);margin-bottom:8px;" data-i18n="p1_cat">DATA ENGINEERING · BATCH &amp; STREAMING</span>
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:20px;letter-spacing:-.4px;margin:0 0 10px;" data-i18n="p1_title">E-commerce Data Platform</h3>
+            <p style="margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.6;" data-i18n="p1_desc">Batch and Kafka streaming pipelines orchestrated by Airflow, feeding a medallion Delta Lake and a dbt star-schema warehouse, with automated data quality checks.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Python</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Kafka</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Spark</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Airflow</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">dbt</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">PostgreSQL</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Great Expectations</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Docker</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:22px;margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+              <!-- TODO: replace with this project's live demo URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--accent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent2);transform:translateY(-1px);"><span data-i18n="proj_demo">Live demo</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"></path></svg></a>
+              <!-- TODO: replace with this project's GitHub repository URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--txt2);text-decoration:none;font-family:var(--disp);font-weight:500;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateY(-1px);"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Code</span></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- project · Urban Mobility Analytics -->
+        <article data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--surfA),var(--surfB));transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-4px);box-shadow:0 18px 40px var(--shadow);">
+          <div style="position:relative;height:178px;background:radial-gradient(240px 150px at 88% 0%,rgba(143,184,240,.16),transparent 70%),#04222D;border-bottom:1px solid var(--border);">
+            <span style="position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.4px;color:#7FA0B5;">~/urban-mobility-databricks</span>
+            <svg viewBox="0 0 320 150" width="100%" height="100%" aria-hidden="true" style="display:block;box-sizing:border-box;padding:24px 4px 4px;font-family:var(--mono);">
+              <g>
+                <path d="M8 40 H150 M8 82 H150 M8 120 H150 M30 16 V140 M84 16 V140 M132 16 V140" stroke="rgba(191,219,247,.07)" stroke-width="6"></path>
+                <circle cx="44" cy="40" r="22" fill="rgba(127,219,202,.07)" stroke="rgba(127,219,202,.3)" stroke-dasharray="3 3"></circle>
+                <circle cx="36" cy="34" r="4" fill="#7FDBCA"></circle><circle cx="52" cy="30" r="4" fill="#7FDBCA"></circle><circle cx="46" cy="48" r="4" fill="#7FDBCA"></circle><circle cx="58" cy="44" r="4" fill="#7FDBCA"></circle><circle cx="32" cy="48" r="4" fill="#7FDBCA"></circle>
+                <circle cx="112" cy="86" r="22" fill="rgba(143,184,240,.07)" stroke="rgba(143,184,240,.3)" stroke-dasharray="3 3"></circle>
+                <circle cx="102" cy="80" r="4" fill="#8FB8F0"></circle><circle cx="118" cy="76" r="4" fill="#8FB8F0"></circle><circle cx="112" cy="96" r="4" fill="#8FB8F0"></circle><circle cx="124" cy="90" r="4" fill="#8FB8F0"></circle><circle cx="100" cy="94" r="4" fill="#8FB8F0"></circle>
+                <circle cx="56" cy="114" r="18" fill="rgba(226,184,75,.07)" stroke="rgba(226,184,75,.3)" stroke-dasharray="3 3"></circle>
+                <circle cx="50" cy="108" r="4" fill="#E2B84B"></circle><circle cx="64" cy="118" r="4" fill="#E2B84B"></circle><circle cx="46" cy="120" r="4" fill="#E2B84B"></circle><circle cx="66" cy="106" r="4" fill="#E2B84B"></circle>
+                <rect x="166" y="22" width="140" height="106" rx="8" fill="rgba(191,219,247,.04)" stroke="rgba(191,219,247,.18)"></rect>
+                <path d="M178 112 H296 M178 112 V34" stroke="rgba(191,219,247,.22)"></path>
+                <polyline points="180,100 194,88 208,94 222,70 236,78 250,58" fill="none" stroke="#7FDBCA" stroke-width="2" stroke-linejoin="round"></polyline>
+                <polyline points="250,58 264,66 278,46 292,52" fill="none" stroke="#E2B84B" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round"></polyline>
+                <circle cx="250" cy="58" r="3" fill="#E2B84B"></circle>
+                <text x="294" y="122" font-size="8" text-anchor="end" fill="#7FA0B5">MLflow · forecast</text>
+              </g>
+            </svg>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;padding:22px 24px 22px;">
+            <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;color:var(--faint);margin-bottom:8px;" data-i18n="p2_cat">DATA ENGINEERING · ML · BI</span>
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:20px;letter-spacing:-.4px;margin:0 0 10px;" data-i18n="p2_title">Urban Mobility Analytics</h3>
+            <p style="margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.6;" data-i18n="p2_desc">Bike-share and weather open data ingested on Databricks, refined in a medallion architecture, with station clustering, demand forecasting tracked in MLflow and a live Power BI dashboard.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Databricks</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">PySpark</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Delta Lake</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">MLflow</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Power BI</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:22px;margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+              <!-- TODO: replace with this project's live demo URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--accent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent2);transform:translateY(-1px);"><span data-i18n="proj_demo">Live demo</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"></path></svg></a>
+              <!-- TODO: replace with this project's GitHub repository URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--txt2);text-decoration:none;font-family:var(--disp);font-weight:500;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateY(-1px);"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Code</span></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- project · Natural-Language Data Assistant -->
+        <article data-reveal="" data-delay="220" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:220ms;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--surfA),var(--surfB));transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-4px);box-shadow:0 18px 40px var(--shadow);">
+          <div style="position:relative;height:178px;background:radial-gradient(240px 150px at 88% 0%,rgba(95,214,143,.14),transparent 70%),#04222D;border-bottom:1px solid var(--border);">
+            <span style="position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.4px;color:#7FA0B5;">~/nl-data-assistant</span>
+            <svg viewBox="0 0 320 150" width="100%" height="100%" aria-hidden="true" style="display:block;box-sizing:border-box;padding:24px 4px 4px;font-family:var(--mono);">
+              <g font-size="8.5">
+                <rect x="14" y="20" width="164" height="26" rx="12" fill="rgba(191,219,247,.10)"></rect>
+                <text x="26" y="36" font-size="9" fill="#E1E5F2">Top 5 products by revenue?</text>
+                <rect x="14" y="54" width="180" height="80" rx="8" fill="#021A23" stroke="rgba(127,219,202,.25)"></rect>
+                <text x="24" y="72"><tspan fill="#7FDBCA">SELECT</tspan><tspan fill="#BFDBF7"> product,</tspan></text>
+                <text x="24" y="86" fill="#BFDBF7">  SUM(amount) <tspan fill="#7FDBCA">AS</tspan> revenue</text>
+                <text x="24" y="100"><tspan fill="#7FDBCA">FROM</tspan><tspan fill="#BFDBF7"> sales</tspan></text>
+                <text x="24" y="114"><tspan fill="#7FDBCA">GROUP BY</tspan><tspan fill="#BFDBF7"> 1 </tspan><tspan fill="#7FDBCA">ORDER BY</tspan><tspan fill="#BFDBF7"> 2 </tspan><tspan fill="#7FDBCA">DESC</tspan></text>
+                <text x="24" y="128"><tspan fill="#7FDBCA">LIMIT</tspan><tspan fill="#E2B84B"> 5</tspan><tspan fill="#BFDBF7">;</tspan></text>
+                <path d="M210 132 H306" stroke="rgba(191,219,247,.22)"></path>
+                <rect x="214" y="44" width="14" height="88" rx="3" fill="#7FDBCA"></rect>
+                <rect x="232" y="64" width="14" height="68" rx="3" fill="#7FDBCA" opacity=".82"></rect>
+                <rect x="250" y="80" width="14" height="52" rx="3" fill="#7FDBCA" opacity=".66"></rect>
+                <rect x="268" y="94" width="14" height="38" rx="3" fill="#7FDBCA" opacity=".5"></rect>
+                <rect x="286" y="104" width="14" height="28" rx="3" fill="#7FDBCA" opacity=".36"></rect>
+                <text x="306" y="32" text-anchor="end" fill="#5FD68F">&#10004; answered</text>
+              </g>
+            </svg>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;padding:22px 24px 22px;">
+            <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;color:var(--faint);margin-bottom:8px;" data-i18n="p3_cat">GENAI · AI AGENT · RAG</span>
+            <h3 style="font-family:var(--disp);font-weight:600;font-size:20px;letter-spacing:-.4px;margin:0 0 10px;" data-i18n="p3_title">Natural-Language Data Assistant</h3>
+            <p style="margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.6;" data-i18n="p3_desc">AI agent that turns plain-language questions into SQL, runs them read-only on PostgreSQL and answers with a chart, grounded by a RAG layer over the data dictionary.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Python</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">LangChain</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">LLM API</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">RAG</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">pgvector</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">PostgreSQL</span>
+              <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">FastAPI</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:22px;margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+              <!-- TODO: replace with this project's live demo URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--accent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent2);transform:translateY(-1px);"><span data-i18n="proj_demo">Live demo</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"></path></svg></a>
+              <!-- TODO: replace with this project's GitHub repository URL -->
+              <a href="https://github.com/Oussama-essalehi" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;color:var(--txt2);text-decoration:none;font-family:var(--disp);font-weight:500;font-size:14px;transition:color .25s,transform .25s;" style-hover="color:var(--accent);transform:translateY(-1px);"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Code</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
     <!-- SKILLS -->
     <section id="skills" style="padding:90px 0;">
       <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:14px;">
-        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">04</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">05</span>
         <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;" data-i18n="skills_h">Skills</h2>
         <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
       </div>
@@ -769,7 +921,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     <!-- CONTACT -->
     <section id="contact" style="padding:90px 0 40px;">
       <div data-reveal="" data-delay="0" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:0ms;display:flex;align-items:center;gap:14px;margin-bottom:34px;">
-        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">05</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--accent);">06</span>
         <h2 style="font-family:var(--disp);font-weight:600;font-size:clamp(26px,3vw,36px);letter-spacing:-1px;margin:0;">Contact</h2>
         <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);"></span>
       </div>
@@ -859,6 +1011,19 @@ class Component extends DCLogic {
       exp1_b3: "Automated recurring reporting, saving hours of manual work every week",
       exp1_b4: "Managed the company ERP and its database, including bug fixes and corrections",
       exp1_t6: "AI agents",
+      proj_h: "Projects",
+      proj_note: "// data engineering · machine learning · generative ai",
+      proj_demo: "Live demo",
+      proj_code: "Code",
+      p1_cat: "DATA ENGINEERING · BATCH & STREAMING",
+      p1_title: "E-commerce Data Platform",
+      p1_desc: "Batch and Kafka streaming pipelines orchestrated by Airflow, feeding a medallion Delta Lake and a dbt star-schema warehouse, with automated data quality checks.",
+      p2_cat: "DATA ENGINEERING · ML · BI",
+      p2_title: "Urban Mobility Analytics",
+      p2_desc: "Bike-share and weather open data ingested on Databricks, refined in a medallion architecture, with station clustering, demand forecasting tracked in MLflow and a live Power BI dashboard.",
+      p3_cat: "GENAI · AI AGENT · RAG",
+      p3_title: "Natural-Language Data Assistant",
+      p3_desc: "AI agent that turns plain-language questions into SQL, runs them read-only on PostgreSQL and answers with a chart, grounded by a RAG layer over the data dictionary.",
       skills_h: "Skills",
       skills_note: "// programming · ai & ml · databases · web · data & bi · cloud",
       sk_prog: "Programming",
@@ -921,6 +1086,19 @@ class Component extends DCLogic {
       exp1_b3: "Automatisation du reporting récurrent : plusieurs heures de travail manuel économisées chaque semaine",
       exp1_b4: "Gestion de l'ERP de l'entreprise et de sa base de données, avec correction des bugs",
       exp1_t6: "Agents IA",
+      proj_h: "Projets",
+      proj_note: "// data engineering · machine learning · ia générative",
+      proj_demo: "Démo",
+      proj_code: "Code",
+      p1_cat: "DATA ENGINEERING · BATCH & STREAMING",
+      p1_title: "Plateforme de données e-commerce",
+      p1_desc: "Pipelines batch et streaming Kafka orchestrés par Airflow, alimentant un Data Lake médaillon sur Delta Lake et un Data Warehouse en étoile avec dbt, avec contrôles qualité automatisés.",
+      p2_cat: "DATA ENGINEERING · ML · BI",
+      p2_title: "Analyse de la mobilité urbaine",
+      p2_desc: "Données open data de vélos en libre-service et de météo ingérées sur Databricks, transformées en architecture médaillon, avec clustering des stations, prévision de fréquentation suivie dans MLflow et dashboard Power BI en direct.",
+      p3_cat: "IA GÉNÉRATIVE · AGENT IA · RAG",
+      p3_title: "Assistant IA d'analyse de données",
+      p3_desc: "Agent IA qui traduit des questions en langage naturel en requêtes SQL, les exécute en lecture seule sur PostgreSQL et répond avec un graphique, fiabilisé par un RAG sur le dictionnaire des données.",
       skills_h: "Compétences",
       skills_note: "// programmation · ia & ml · bases de données · web · data & bi · cloud",
       sk_prog: "Programmation",
