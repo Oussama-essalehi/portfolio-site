@@ -1074,6 +1074,17 @@ class Component extends DCLogic {
      tags: de = Data Engineering, ml = Machine Learning, bi = Analytics & BI, web = Web & 3D */
   projects = [
     {
+      title: "Borderless",
+      img: "borderless",
+      demo: "https://borderless-tawny.vercel.app",
+      code: "https://github.com/Oussama-essalehi/Borderless",
+      tags: ["de", "bi", "web"],
+      cat: { en: "DATA ENGINEERING · NETWORK ANALYSIS · MAP", fr: "DATA ENGINEERING · ANALYSE DE RÉSEAU · CARTE" },
+      desc: { en: "An atlas of visa access between 199 passports since 2019: a monthly Airflow pipeline builds a tested dbt + DuckDB warehouse, networkx finds visa blocs and measures reciprocity, and an interactive map shows where each passport goes and how COVID-19 changed it.", fr: "Un atlas de l'accès sans visa entre 199 passeports depuis 2019 : un pipeline Airflow mensuel construit un entrepôt dbt + DuckDB testé, networkx détecte les blocs de visas et mesure la réciprocité, et une carte interactive montre où va chaque passeport et l'effet du COVID-19." },
+      stats: [["199", { en: "passports compared", fr: "passeports comparés" }], ["54", { en: "snapshots since 2019", fr: "relevés depuis 2019" }], ["68", { en: "dbt tests", fr: "tests dbt" }]],
+      tech: ["Python", "Airflow", "dbt", "DuckDB", "networkx", "TypeScript", "MapLibre", "d3"]
+    },
+    {
       title: "SkyPulse",
       img: "skypulse",
       demo: "https://skyradar.duckdns.org",
