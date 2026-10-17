@@ -441,6 +441,20 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
   [data-pj-shot]:hover [data-pj-img]{transform:scale(1.03);}
   [data-pj-list]::-webkit-scrollbar{width:6px;height:6px;}
   [data-pj-list]::-webkit-scrollbar-thumb{border:none;}
+  [data-nav-link]{padding:8px 14px;border-radius:100px;color:var(--muted);font-size:15px;text-decoration:none;white-space:nowrap;transition:color .2s,background .2s;}
+  [data-nav-link]:hover{color:var(--txt);background:var(--panel);}
+  [data-nav-link][aria-current="true"]{color:var(--accent);background:var(--tintA);}
+  [data-nav-link]:focus-visible,[data-nav-resume]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media(max-width:1060px){
+    [data-topnav-links]{display:none !important;}
+    [data-nav-toggle]{display:grid !important;}
+    [data-topnav-bar]{padding-left:20px !important;}
+  }
+  @media(max-width:520px){
+    [data-nav-resume] span{display:none;}
+    [data-nav-resume]{padding:0 11px !important;}
+    [data-topnav-bar]{gap:8px !important;padding:7px 7px 7px 16px !important;}
+  }
   @media(max-width:860px){
     [data-pj-grid]{grid-template-columns:minmax(0,1fr) !important;}
     [data-pj-side]{min-height:0 !important;}
@@ -479,26 +493,41 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     <div style="position:absolute;top:55%;left:6%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(28,110,126,.14),transparent 70%);filter:blur(20px);animation:floatB 19s ease-in-out infinite;animation-play-state:var(--ps);"></div>
   </div>
 
-  <!-- top bar -->
-  <header style="position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);backdrop-filter:blur(8px);background:linear-gradient(180deg,var(--headerbg),transparent);">
-    <a href="#home" style="display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);">
-      <span style="display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));font-family:var(--disp);font-weight:700;color:var(--onAccent);font-size:15px;letter-spacing:.5px;">OE</span>
-      <span style="font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.5px;">oussama-essalehi<span style="color:var(--accent);">.dev</span></span>
-    </a>
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end;">
-      <div style="display:flex;border:1px solid var(--border);border-radius:100px;overflow:hidden;background:var(--panel);">
+  <!-- top bar: a floating pill. Links light up for the section in view (initNav); on small screens they move into the menu button. -->
+  <header data-topnav="" style="position:fixed;top:14px;left:0;right:0;z-index:30;padding:0 clamp(12px,3vw,32px);pointer-events:none;">
+    <div data-topnav-bar="" style="pointer-events:auto;max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 10px 9px 26px;border:1px solid var(--border);border-radius:100px;background:var(--headerbg);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 10px 30px var(--shadow);">
+      <a href="#home" aria-label="Oussama Essalehi, back to top" style="flex-shrink:0;text-decoration:none;font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.6px;color:var(--txt);">oussama<span style="color:var(--accent);">.</span></a>
+      <nav data-topnav-links="" aria-label="Sections" style="display:flex;align-items:center;gap:2px;">
+        <a data-nav-link="" href="#about" data-i18n="nav_about">About</a>
+        <a data-nav-link="" href="#formation" data-i18n="nav_edu">Education</a>
+        <a data-nav-link="" href="#experience" data-i18n="nav_exp">Experience</a>
+        <a data-nav-link="" href="#projects" data-i18n="nav_proj">Projects</a>
+        <a data-nav-link="" href="#skills" data-i18n="nav_skills">Skills</a>
+        <a data-nav-link="" href="#contact" data-i18n="nav_contact">Contact</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <div style="display:flex;align-items:stretch;height:40px;box-sizing:border-box;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--panel);">
         <button data-lang-btn="en" onClick="{{ setEn }}" style="padding:7px 13px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.5px;transition:.25s;">EN</button>
         <button data-lang-btn="fr" onClick="{{ setFr }}" style="padding:7px 13px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.5px;transition:.25s;">FR</button>
       </div>
-      <button data-theme-btn="" onClick="{{ toggleTheme }}" title="Light / dark" style="display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border);border-radius:100px;background:var(--panel);color:var(--muted);cursor:pointer;transition:.25s;" style-hover="color:var(--accent);border-color:var(--accent);">
-        <svg data-theme-sun="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
-        <svg data-theme-moon="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="display:none;"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path></svg>
-      </button>
-      <div style="display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;color:var(--muted);">
-        <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 2.4s ease-in-out infinite;animation-play-state:var(--ps);"></span>
-        <span data-i18n="nav_status">OPEN TO WORK · FRANCE</span>
+        <button data-theme-btn="" onClick="{{ toggleTheme }}" title="Light / dark" aria-label="Light / dark" style="display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--txt2);cursor:pointer;transition:.25s;" style-hover="color:var(--accent);border-color:var(--accent);">
+          <svg data-theme-sun="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
+          <svg data-theme-moon="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="display:none;"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path></svg>
+        </button>
+        <a data-nav-resume="" href="./CV_Oussama_Essalehi_DA.pdf?v=76e76d87" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14.5px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-1px);box-shadow:0 8px 22px var(--shadow);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg><span data-i18n="nav_resume">Resume</span></a>
+        <button data-nav-toggle="" onClick="{{ toggleNav }}" aria-label="Menu" aria-expanded="false" style="display:none;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--txt2);cursor:pointer;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        </button>
       </div>
     </div>
+    <nav data-nav-menu="" aria-label="Sections" style="display:none;pointer-events:auto;max-width:1180px;margin:8px auto 0;padding:8px;flex-direction:column;gap:2px;border:1px solid var(--border);border-radius:20px;background:var(--headerbg);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 10px 30px var(--shadow);">
+      <a data-nav-link="" href="#about" data-i18n="nav_about">About</a>
+      <a data-nav-link="" href="#formation" data-i18n="nav_edu">Education</a>
+      <a data-nav-link="" href="#experience" data-i18n="nav_exp">Experience</a>
+      <a data-nav-link="" href="#projects" data-i18n="nav_proj">Projects</a>
+      <a data-nav-link="" href="#skills" data-i18n="nav_skills">Skills</a>
+      <a data-nav-link="" href="#contact" data-i18n="nav_contact">Contact</a>
+    </nav>
   </header>
 
   <!-- side nav -->
@@ -529,7 +558,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
         <div data-reveal="" data-delay="380" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:380ms;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
           <a href="#contact" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14.5px;transition:.3s;box-shadow:0 8px 30px rgba(28,110,126,.25);" style-hover="transform:translateY(-3px);box-shadow:0 14px 40px rgba(28,110,126,.4);" data-i18n="btn_contact">Get in touch →</a>
           <a href="#skills" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);" data-i18n="btn_skills">View skills</a>
-          <a href="./CV_Oussama_Essalehi_DA.pdf" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);color:var(--accent);">
+          <a href="./CV_Oussama_Essalehi_DA.pdf?v=76e76d87" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);color:var(--accent);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
             <span data-i18n="btn_cv">Download CV</span>
           </a>
@@ -920,7 +949,13 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
 class Component extends DCLogic {
   dict = {
     en: {
-      nav_status: "OPEN TO WORK · FRANCE",
+      nav_about: "About",
+      nav_edu: "Education",
+      nav_exp: "Experience",
+      nav_proj: "Projects",
+      nav_skills: "Skills",
+      nav_contact: "Contact",
+      nav_resume: "Resume",
       hero_intro: "I turn raw, messy data into clear stories and confident decisions, from querying and cleaning to modeling and visualization.",
       btn_contact: "Get in touch →",
       btn_skills: "View skills",
@@ -993,7 +1028,13 @@ class Component extends DCLogic {
       lbl_location: "LOCATION"
     },
     fr: {
-      nav_status: "OUVERT AU TRAVAIL · FRANCE",
+      nav_about: "À propos",
+      nav_edu: "Formation",
+      nav_exp: "Expérience",
+      nav_proj: "Projets",
+      nav_skills: "Compétences",
+      nav_contact: "Contact",
+      nav_resume: "CV",
       hero_intro: "Je transforme des données brutes et désordonnées en récits clairs et décisions sûres, du requêtage et du nettoyage à la modélisation et la visualisation.",
       btn_contact: "Me contacter →",
       btn_skills: "Voir les compétences",
@@ -1299,6 +1340,37 @@ class Component extends DCLogic {
     if (animate && !this.noMotion()) {
       q("[data-pj-body]").animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
     }
+  }
+
+  initNav() {
+    const root = this.rootEl || document;
+    if (this._navInit) return;
+    this._navInit = true;
+    const links = root.querySelectorAll("[data-nav-link]");
+    const mark = (id) => links.forEach((a) => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + id)));
+    // a section counts as "in view" when it crosses the middle of the screen
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) mark(e.target.id); });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    ["home", "about", "formation", "experience", "projects", "skills", "contact"].forEach((id) => {
+      const el = root.querySelector("#" + id);
+      if (el) io.observe(el);
+    });
+    const menu = root.querySelector("[data-nav-menu]");
+    if (menu) menu.addEventListener("click", (e) => { if (e.target.closest("a")) this.setNavOpen(false); });
+    document.addEventListener("click", (e) => {
+      if (this._navOpen && !e.target.closest("[data-topnav]")) this.setNavOpen(false);
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && this._navOpen) this.setNavOpen(false); });
+  }
+
+  setNavOpen(open) {
+    const root = this.rootEl || document;
+    this._navOpen = open;
+    const menu = root.querySelector("[data-nav-menu]");
+    const btn = root.querySelector("[data-nav-toggle]");
+    if (menu) menu.style.display = open ? "flex" : "none";
+    if (btn) btn.setAttribute("aria-expanded", String(open));
   }
 
   termLines(lang) {
@@ -1612,6 +1684,7 @@ class Component extends DCLogic {
       setEn: () => this.applyLang("en"),
       setFr: () => this.applyLang("fr"),
       toggleTheme: () => this.applyTheme(this.theme === "dark" ? "light" : "dark"),
+      toggleNav: () => this.setNavOpen(!this._navOpen),
       pjPrev: () => this.stepProject(-1),
       pjNext: () => this.stepProject(1),
       sendMsg: () => {
@@ -1679,6 +1752,7 @@ class Component extends DCLogic {
     this.typeName();
     this.initTerminal();
     this.initProjects();
+    this.initNav();
     this.initReveal();
 
     let theme = "light";
