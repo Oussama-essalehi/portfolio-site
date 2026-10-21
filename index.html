@@ -1118,6 +1118,17 @@ class Component extends DCLogic {
      tags: de = Data Engineering, ml = Machine Learning, bi = Analytics & BI */
   projects = [
     {
+      title: "64 Squares",
+      img: "64squares",
+      demo: "",
+      code: "https://github.com/Oussama-essalehi/64-Squares",
+      tags: ["de", "bi"],
+      cat: { en: "CHESS ANALYTICS · STATISTICS · BI", fr: "ANALYSE ÉCHECS · STATISTIQUES · BI" },
+      desc: { en: "What really wins chess games? 2 million Lichess games streamed from a 29 GB monthly file, cleaned and modelled in DuckDB, then tested statistically (rating, colour, clock management, opening), with a Power BI report, a web dashboard and an app that compares your own games.", fr: "Qu'est-ce qui fait vraiment gagner aux échecs ? 2 millions de parties Lichess extraites en flux d'un fichier mensuel de 29 Go, nettoyées et modélisées dans DuckDB, puis testées statistiquement (classement, couleur, pendule, ouverture), avec un rapport Power BI, un dashboard web et une app qui compare vos propres parties." },
+      stats: [[{ en: "1.96M", fr: "1,96 M" }, { en: "games analysed", fr: "parties analysées" }], [{ en: "29 GB", fr: "29 Go" }, { en: "raw file streamed", fr: "fichier brut lu en flux" }], ["142", { en: "automated tests", fr: "tests automatisés" }]],
+      tech: ["Python", "DuckDB", "SQL", "pandas", "statsmodels", "Power BI", "Streamlit", "Plotly"]
+    },
+    {
       title: "Borderless",
       img: "borderless",
       demo: "https://borderless-tawny.vercel.app",
