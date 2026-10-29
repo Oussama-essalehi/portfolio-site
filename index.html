@@ -460,12 +460,6 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     [data-nav-resume]{padding:0 11px !important;}
     [data-topnav-bar]{gap:8px !important;padding:7px 7px 7px 16px !important;}
   }
-  [data-pj-thumb]{flex-shrink:0;width:64px;height:38px;padding:0;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#0B1016;cursor:pointer;opacity:.7;transition:opacity .2s,border-color .2s;}
-  [data-pj-thumb] img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;}
-  [data-pj-thumb]:hover{opacity:1;}
-  [data-pj-thumb][aria-pressed="true"]{border-color:#7FDBCA;opacity:1;}
-  [data-pj-thumb]:focus-visible{outline:2px solid #7FDBCA;outline-offset:1px;}
-  [data-pj-gal-cap]{margin-left:auto;padding:0 6px 0 8px;font-family:var(--mono);font-size:10.5px;color:#E1E5F2;white-space:nowrap;}
   @media(max-width:860px){
     [data-pj-grid]{grid-template-columns:minmax(0,1fr) !important;}
     [data-pj-side]{min-height:0 !important;}
@@ -481,8 +475,6 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     [data-sidenav]{display:none !important;}
   }
   @media(max-width:520px){
-    [data-pj-thumb]{width:46px !important;height:28px !important;}
-    [data-pj-gal-cap]{display:none;}
     [data-pj-stats]{gap:10px !important;}
     [data-pj-detail]{padding:10px !important;}
     [data-cf-row]{grid-template-columns:1fr !important;}
@@ -775,7 +767,6 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
 
           <!-- selected project -->
           <div data-pj-detail="" style="min-width:0;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:16px;">
-            <div data-pj-media="" style="position:relative;">
             <a data-pj-shot="" href="#" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--panel2);transition:border-color .3s;" style-hover="border-color:var(--accent);">
               <div style="display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid var(--border);background:var(--panel);">
                 <span style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></span>
@@ -787,8 +778,6 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
                 <img data-pj-img="" alt="" width="1200" height="750" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .25s;">
               </div>
             </a>
-              <div data-pj-gallery="" role="group" aria-label="Pictures" style="display:none;position:absolute;left:10px;right:10px;bottom:10px;align-items:center;gap:6px;padding:6px;border-radius:10px;background:rgba(4,34,45,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-x:auto;"></div>
-            </div>
             <div data-pj-body="" style="padding:20px 8px 6px;">
               <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
                 <span data-pj-num="" style="font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;letter-spacing:-1.5px;color:transparent;-webkit-text-stroke:1.1px var(--accent);"></span>
@@ -804,6 +793,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
               <div style="display:flex;flex-wrap:wrap;gap:12px;">
                 <a data-pj-demo="" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);"><span data-pj-demo-label="">Live demo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
                 <a data-pj-code="" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"></path></svg><span data-i18n="proj_code">Source code</span></a>
+                <button data-pj-pbi="" type="button" onClick="{{ pjPowerBI }}" style="display:none;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14px;cursor:pointer;transition:border-color .25s,color .25s,transform .25s;" style-hover="border-color:var(--accent);color:var(--accent);transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg><span data-i18n="proj_pbi">View Power BI dashboard</span></button>
               </div>
             </div>
           </div>
@@ -959,7 +949,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
 
   </main>
 
-  <!-- picture viewer (opened from a project's gallery) -->
+  <!-- picture viewer (opened by a project's "View Power BI dashboard" button) -->
   <div data-lb="" role="dialog" aria-modal="true" aria-label="Picture viewer" style="display:none;position:fixed;inset:0;z-index:60;align-items:center;justify-content:center;padding:56px clamp(12px,6vw,72px) 24px;background:rgba(3,10,14,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);">
     <figure style="margin:0;max-width:min(1440px,100%);display:flex;flex-direction:column;align-items:center;gap:12px;">
       <img data-lb-img="" alt="" style="display:block;max-width:100%;max-height:calc(100vh - 130px);border-radius:10px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.6);">
@@ -1011,7 +1001,7 @@ class Component extends DCLogic {
       proj_note: "// pick a project · filter by domain · every one is live",
       proj_demo: "Live demo",
       proj_video: "Watch the demo",
-      proj_enlarge: "Enlarge the picture",
+      proj_pbi: "View Power BI dashboard",
       proj_code: "Source code",
       proj_count: "{n} of {t} projects",
       pj_all: "All",
@@ -1090,7 +1080,7 @@ class Component extends DCLogic {
       proj_note: "// choisissez un projet · filtrez par domaine · tous sont en ligne",
       proj_demo: "Voir la démo",
       proj_video: "Voir la vidéo",
-      proj_enlarge: "Agrandir l'image",
+      proj_pbi: "Voir le dashboard Power BI",
       proj_code: "Code source",
       proj_count: "{n} projets sur {t}",
       pj_all: "Tous",
@@ -1138,8 +1128,8 @@ class Component extends DCLogic {
   /* Projects shown in the explorer (section 04), in display order.
      To add one: copy an entry, put its screenshot (1200×750 .webp) in assets/projects/ and set `img` to its name.
      Text can be a plain string, or { en, fr } when it differs between languages.
-     gallery (optional): extra pictures, e.g. Power BI pages, as { img, label }; each needs img.webp and a small img-sm.webp
-     (240 px wide). The strip of thumbnails then appears on the screenshot, and clicking the picture opens it full size.
+     powerbi (optional): screenshots of the Power BI report pages, as { img, label } (img.webp in assets/projects/).
+     A "View Power BI dashboard" button then appears and opens them full size, one after the other.
      demo: link to the live site; add `video: true` when it is a video instead, or leave it out ("") if there is none.
      tags: de = Data Engineering, ml = Machine Learning, bi = Analytics & BI */
   projects = [
@@ -1235,13 +1225,12 @@ class Component extends DCLogic {
     {
       title: "CrashMap France",
       img: "crashmap",
-      gallery: [
-        { img: "crashmap", label: { en: "Web app · Map of France", fr: "Application web · Carte de France" } },
-        { img: "crashmap-pbi-1", label: { en: "Power BI · Overview", fr: "Power BI · Vue d'ensemble" } },
-        { img: "crashmap-pbi-2", label: { en: "Power BI · Map of France", fr: "Power BI · Carte de France" } },
-        { img: "crashmap-pbi-3", label: { en: "Power BI · When?", fr: "Power BI · Quand ?" } },
-        { img: "crashmap-pbi-4", label: { en: "Power BI · Under what conditions?", fr: "Power BI · Dans quelles conditions ?" } },
-        { img: "crashmap-pbi-5", label: { en: "Power BI · Who?", fr: "Power BI · Qui ?" } }
+      powerbi: [
+        { img: "crashmap-pbi-1", label: { en: "Overview", fr: "Vue d'ensemble" } },
+        { img: "crashmap-pbi-2", label: { en: "Map of France", fr: "Carte de France" } },
+        { img: "crashmap-pbi-3", label: { en: "When?", fr: "Quand ?" } },
+        { img: "crashmap-pbi-4", label: { en: "Under what conditions?", fr: "Dans quelles conditions ?" } },
+        { img: "crashmap-pbi-5", label: { en: "Who?", fr: "Qui ?" } }
       ],
       demo: "https://crashmap-france.streamlit.app/",
       code: "https://github.com/Oussama-essalehi/CrashMap-France",
@@ -1276,12 +1265,7 @@ class Component extends DCLogic {
     const root = this.rootEl || document;
     const list = root.querySelector("[data-pj-list]");
     if (!list || this._pj) return;
-    this._pj = { root: root, list: list, filter: "all", active: 0, pic: 0, picFor: 0 };
-    root.querySelector("[data-pj-shot]").addEventListener("click", (e) => {
-      if (!this.projects[this._pj.active].gallery) return;
-      e.preventDefault();
-      this.openViewer(this._pj.pic);
-    });
+    this._pj = { root: root, list: list, filter: "all", active: 0, pic: 0 };
     const lb = root.querySelector("[data-lb]");
     lb.addEventListener("click", (e) => { if (e.target === lb) this.closeViewer(); });
     document.addEventListener("keydown", (e) => {
@@ -1356,37 +1340,6 @@ class Component extends DCLogic {
     this.paintProject(animate);
   }
 
-  pjPictures(p) {
-    return p.gallery || [{ img: p.img, label: p.title }];
-  }
-
-  paintPicture() {
-    const st = this._pj;
-    const p = this.projects[st.active];
-    const pics = this.pjPictures(p);
-    const pic = pics[st.pic] || pics[0];
-    const img = st.root.querySelector("[data-pj-img]");
-    const src = "./assets/projects/" + pic.img + ".webp";
-    if (img.getAttribute("src") !== src) {
-      img.style.opacity = "0";
-      img.onload = () => { img.style.opacity = "1"; };
-      img.setAttribute("src", src);
-    }
-    img.alt = this.tr(pic.label);
-
-    const strip = st.root.querySelector("[data-pj-gallery]");
-    strip.innerHTML = "";
-    strip.style.display = p.gallery ? "flex" : "none";
-    if (!p.gallery) return;
-    pics.forEach((g, i) => {
-      const b = this.pjEl("button", { "data-pj-thumb": "", type: "button", "aria-label": this.tr(g.label), title: this.tr(g.label), "aria-pressed": String(i === st.pic) });
-      b.appendChild(this.pjEl("img", { src: "./assets/projects/" + g.img + "-sm.webp", alt: "", loading: "lazy", decoding: "async" }));
-      b.addEventListener("click", () => { st.pic = i; this.paintPicture(); });
-      strip.appendChild(b);
-    });
-    strip.appendChild(this.pjEl("span", { "data-pj-gal-cap": "" }, this.tr(pic.label) + " · " + (st.pic + 1) + "/" + pics.length));
-  }
-
   openViewer(i) {
     const root = this._pj.root;
     this._lbOpen = true;
@@ -1400,17 +1353,16 @@ class Component extends DCLogic {
 
   showViewer(i) {
     const st = this._pj;
-    const pics = this.pjPictures(this.projects[st.active]);
+    const pics = this.projects[st.active].powerbi;
     st.pic = (i + pics.length) % pics.length;
     const pic = pics[st.pic];
     const root = st.root;
     const img = root.querySelector("[data-lb-img]");
     img.src = "./assets/projects/" + pic.img + ".webp";
     img.alt = this.tr(pic.label);
-    root.querySelector("[data-lb-cap]").textContent = this.tr(this.projects[st.active].title) + " · " + this.tr(pic.label);
+    root.querySelector("[data-lb-cap]").textContent = this.tr(this.projects[st.active].title) + " · Power BI · " + this.tr(pic.label);
     root.querySelector("[data-lb-pos]").textContent = (st.pic + 1) + " / " + pics.length;
     root.querySelectorAll("[data-lb-nav]").forEach((b) => { b.style.display = pics.length > 1 ? "grid" : "none"; });
-    this.paintPicture();
   }
 
   stepViewer(dir) {
@@ -1443,10 +1395,17 @@ class Component extends DCLogic {
     const link = p.demo || p.code;
     const host = link.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
     q("[data-pj-shot]").href = link;
-    q("[data-pj-shot]").setAttribute("aria-label", p.gallery ? this.dict[this.lang || "en"].proj_enlarge : title);
+    q("[data-pj-shot]").setAttribute("aria-label", title);
     q("[data-pj-host]").textContent = host;
-    if (st.picFor !== st.active) { st.pic = 0; st.picFor = st.active; }
-    this.paintPicture();
+    const img = q("[data-pj-img]");
+    const src = "./assets/projects/" + p.img + ".webp";
+    if (img.getAttribute("src") !== src) {
+      img.style.opacity = "0";
+      img.onload = () => { img.style.opacity = "1"; };
+      img.setAttribute("src", src);
+    }
+    img.alt = title;
+    q("[data-pj-pbi]").style.display = p.powerbi ? "inline-flex" : "none";
     q("[data-pj-num]").textContent = String(st.active + 1).padStart(2, "0");
     q("[data-pj-cat]").textContent = this.tr(p.cat);
     const at = vis.indexOf(p);
@@ -1819,6 +1778,7 @@ class Component extends DCLogic {
       setFr: () => this.applyLang("fr"),
       toggleTheme: () => this.applyTheme(this.theme === "dark" ? "light" : "dark"),
       toggleNav: () => this.setNavOpen(!this._navOpen),
+      pjPowerBI: () => this.openViewer(0),
       lbClose: () => this.closeViewer(),
       lbPrev: () => this.stepViewer(-1),
       lbNext: () => this.stepViewer(1),
