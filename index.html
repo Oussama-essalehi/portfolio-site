@@ -1205,6 +1205,17 @@ class Component extends DCLogic {
       desc: { en: "What really wins chess games? 2 million Lichess games streamed from a 29 GB monthly file, cleaned and modelled in DuckDB, then tested statistically (rating, colour, clock management, opening), with a Power BI report, a web dashboard and an app that compares your own games.", fr: "Qu'est-ce qui fait vraiment gagner aux échecs ? 2 millions de parties Lichess extraites en flux d'un fichier mensuel de 29 Go, nettoyées et modélisées dans DuckDB, puis testées statistiquement (classement, couleur, pendule, ouverture), avec un rapport Power BI, un dashboard web et une app qui compare vos propres parties." },
       stats: [[{ en: "1.96M", fr: "1,96 M" }, { en: "games analysed", fr: "parties analysées" }], [{ en: "29 GB", fr: "29 Go" }, { en: "raw file streamed", fr: "fichier brut lu en flux" }], ["142", { en: "automated tests", fr: "tests automatisés" }]],
       tech: ["Python", "DuckDB", "SQL", "pandas", "statsmodels", "Power BI", "Streamlit", "Plotly"]
+    },
+    {
+      title: "CrashMap France",
+      img: "crashmap",
+      demo: "",
+      code: "https://github.com/Oussama-essalehi/CrashMap-France",
+      tags: ["de", "ml", "bi"],
+      cat: { en: "DATA ANALYSIS · ROAD SAFETY · ML", fr: "ANALYSE DE DONNÉES · SÉCURITÉ ROUTIÈRE · ML" },
+      desc: { en: "Where, when and in what conditions do the most serious road accidents happen in France? 327,628 injury accidents from 2019 to 2024 (ONISR open data), cleaned into a PostgreSQL star schema and analysed with statistics, a predictive model and hotspot clustering, served in a bilingual Streamlit app with maps.", fr: "Où, quand et dans quelles conditions se produisent les accidents de la route les plus graves en France ? 327 628 accidents corporels de 2019 à 2024 (données ONISR), nettoyés dans un schéma en étoile PostgreSQL et analysés par statistiques, modèle prédictif et détection de points noirs, dans une application Streamlit bilingue avec cartes." },
+      stats: [[{ en: "327,628", fr: "327 628" }, { en: "accidents analysed", fr: "accidents analysés" }], [{ en: "0.78", fr: "0,78" }, { en: "ROC AUC, severity model", fr: "ROC AUC, modèle de gravité" }], ["108", { en: "automated tests", fr: "tests automatisés" }]],
+      tech: ["Python", "pandas", "PostgreSQL", "SQL", "scikit-learn", "statsmodels", "Plotly", "Streamlit", "Power BI"]
     }
   ];
 
