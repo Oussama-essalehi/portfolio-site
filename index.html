@@ -460,6 +460,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
     [data-nav-resume]{padding:0 11px !important;}
     [data-topnav-bar]{gap:8px !important;padding:7px 7px 7px 16px !important;}
   }
+  [data-skills-grid] > :last-child{grid-column:1 / -1;}
   @media(max-width:860px){
     [data-pj-grid]{grid-template-columns:minmax(0,1fr) !important;}
     [data-pj-side]{min-height:0 !important;}
@@ -519,7 +520,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
           <svg data-theme-sun="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
           <svg data-theme-moon="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="display:none;"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path></svg>
         </button>
-        <a data-nav-resume="" href="./CV_Oussama_Essalehi_DA.pdf?v=76e76d87" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14.5px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-1px);box-shadow:0 8px 22px var(--shadow);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg><span data-i18n="nav_resume">Resume</span></a>
+        <a data-nav-resume="" href="./CV_Oussama_Essalehi_DA.pdf?v=b84243de" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14.5px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-1px);box-shadow:0 8px 22px var(--shadow);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg><span data-i18n="nav_resume">Resume</span></a>
         <button data-nav-toggle="" onClick="{{ toggleNav }}" aria-label="Menu" aria-expanded="false" style="display:none;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--txt2);cursor:pointer;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
         </button>
@@ -553,7 +554,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
       <div>
         
         <div data-reveal="" data-delay="50" style="animation: riseIn .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: 50ms; display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border: 1px solid var(--border); border-radius: 100px; background: var(--panel); font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .5px; margin-bottom: 26px; position: static">
-          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent);"></span>Data &amp; AI Engineer<br></div><h1 data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;font-family:var(--disp);font-weight:700;font-size:clamp(44px,6.4vw,84px);line-height:.98;letter-spacing:-2px;margin:0 0 8px;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent);"></span>Data Analyst<br></div><h1 data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;font-family:var(--disp);font-weight:700;font-size:clamp(44px,6.4vw,84px);line-height:.98;letter-spacing:-2px;margin:0 0 8px;">
           <span data-type-line="1">Oussama</span><br><span data-type-line="2" style="background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">Essalehi</span>
         </h1>
         <p data-rotate-line="" style="font-family:var(--disp);font-weight:600;font-size:clamp(18px,1.7vw,25px);color:var(--accent);margin:0 0 18px;">Turning Data into Insights</p>
@@ -563,7 +564,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
         <div data-reveal="" data-delay="380" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:380ms;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
           <a href="#contact" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:var(--disp);font-weight:600;font-size:14.5px;transition:.3s;box-shadow:0 8px 30px rgba(28,110,126,.25);" style-hover="transform:translateY(-3px);box-shadow:0 14px 40px rgba(28,110,126,.4);" data-i18n="btn_contact">Get in touch →</a>
           <a href="#skills" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);" data-i18n="btn_skills">View skills</a>
-          <a href="./CV_Oussama_Essalehi_DA.pdf?v=76e76d87" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);color:var(--accent);">
+          <a href="./CV_Oussama_Essalehi_DA.pdf?v=b84243de" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;background:var(--panel);border:1px solid var(--border);color:var(--txt);font-family:var(--disp);font-weight:500;font-size:14.5px;transition:.3s;" style-hover="background:var(--panel2);border-color:var(--accent);color:var(--accent);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
             <span data-i18n="btn_cv">Download CV</span>
           </a>
@@ -693,6 +694,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
           </div>
           <p style="margin:0 0 6px;color:var(--txt2);font-size:15px;" data-i18n="form1_sub">Data Engineering &amp; Protection</p>
           <p style="margin:0;color:var(--muted);font-size:13.5px;font-family:var(--mono);">Université Paul Sabatier · Toulouse</p>
+          <p style="margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.6;" data-i18n="form1_courses">Courses: Data Science, Data Engineering, Machine Learning, Big Data, Gen AI, Cloud &amp; DevOps, agile project management, data governance</p>
         </div>
 
         <div data-reveal="" data-delay="140" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:140ms;position:relative;border:1px solid var(--border);border-radius:16px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:24px 26px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
@@ -725,18 +727,19 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
           </div>
           <p style="margin:0 0 14px;color:var(--txt2);font-size:15px;" data-i18n="exp1_sub">Wewise · Toulouse, France</p>
           <ul style="margin:0;padding:0 0 0 2px;list-style:none;display:flex;flex-direction:column;gap:9px;">
-            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b1">Built and maintained Power BI dashboards used daily by business teams</span></li>
-            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b2">Developed SQL and Python pipelines to collect, clean and model data from multiple sources</span></li>
-            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b3">Automated recurring reporting, saving hours of manual work every week</span></li>
-            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b4">Managed the company ERP and its database, including bug fixes and corrections</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b1">Translated the needs of 4 business departments (sales, purchasing, logistics, management) into around thirty KPIs, computed from ERP data</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b2">Designed 8 Power BI dashboards used every week by around forty employees, on a 15-table star schema with 60+ DAX measures</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b3">Made 100,000+ rows from the ERP and business Excel files reliable with SQL Server queries and Python scripts (pandas, numpy), fixing ~4% duplicates and inconsistencies</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b4">Cut report refresh time from 15 to 4 min and model size by 35% (DAX and Power Query optimisation), and automated 5 recurring tasks in VBA, saving about 6 hours of manual work a week</span></li>
+            <li style="display:flex;gap:10px;align-items:baseline;color:var(--muted);font-size:14px;line-height:1.55;"><span style="color:var(--accent);font-family:var(--mono);font-size:11px;">▸</span><span data-i18n="exp1_b5">Trained around thirty users, documented the KPIs and set up 6 RLS security roles to manage access rights</span></li>
           </ul>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
-            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Excel (VBA)</span>
-            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL Server</span>
             <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Power BI</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">DAX</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Power Query</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL Server</span>
             <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Python</span>
-            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">SQL</span>
-            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;" data-i18n="exp1_t6">AI agents</span>
+            <span style="padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--tintA);font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap;">Excel (VBA)</span>
           </div>
         </div>
       </div>
@@ -811,7 +814,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
       </div>
       <p data-reveal="" data-delay="40" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:40ms;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:0 0 34px;" data-i18n="skills_note">// languages · databases · web · BI · cloud</p>
 
-      <div data-reveal="" data-delay="90" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:90ms;display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px;">
+      <div data-skills-grid="" data-reveal="" data-delay="90" style="animation:riseIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:90ms;display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px;">
 
         <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
           <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_prog">Programming</h3>
@@ -825,6 +828,20 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
         </div>
 
         <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_de">Data Engineering</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/devicon/apachespark.svg?height=48" alt="" data-skill="Spark / PySpark" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Spark / PySpark</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/apachekafka.svg?height=48&amp;color=%231C6E7E" alt="" data-skill="Kafka" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Kafka</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/airflow-icon.svg?height=48" alt="" data-skill="Airflow" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Airflow</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/dbt-icon.svg?height=48" alt="" data-skill="dbt" style="width:17px;height:17px;object-fit:contain;" loading="lazy">dbt</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">Delta Lake</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/databricks-icon.svg?height=48" alt="" data-skill="Databricks" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Databricks</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">ETL / ELT</span>
+            <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">Great Expectations</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
           <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_ai">AI &amp; ML</h3>
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/devicon/scikitlearn.svg?height=48" alt="" data-skill="Scikit-learn" style="width:18px;height:17px;object-fit:contain;" loading="lazy">Scikit-learn</span>
@@ -833,6 +850,8 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/langchain.svg?height=48&amp;color=%231C6E7E" alt="" data-skill="LangChain" style="width:19px;height:17px;object-fit:contain;" loading="lazy">LangChain</span>
             <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">RAG</span>
             <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);">LLM APIs</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/mlflow.svg?height=48&amp;color=%230194E2" alt="" data-skill="MLflow" style="width:17px;height:17px;object-fit:contain;" loading="lazy">MLflow</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/streamlit.svg?height=48" alt="" data-skill="Streamlit" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Streamlit</span>
             <span style="display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);" data-i18n="sk_agents">AI agents</span>
           </div>
         </div>
@@ -845,19 +864,6 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/devicon/microsoftsqlserver.svg?height=48" alt="" data-skill="SQL Server" style="width:17px;height:17px;object-fit:contain;" loading="lazy">SQL Server</span>
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/mongodb-icon.svg?height=48" alt="" data-skill="MongoDB" style="width:12px;height:17px;object-fit:contain;" loading="lazy">MongoDB</span>
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/simple-icons/oracle.svg?height=48&amp;color=%23C74634" alt="" data-skill="Oracle" style="width:22px;height:15px;object-fit:contain;" loading="lazy">Oracle</span>
-          </div>
-        </div>
-
-        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
-          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_web">Web Development</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;">
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/react.svg?height=48" alt="" data-skill="React" style="width:18px;height:17px;object-fit:contain;" loading="lazy">React</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/nodejs-icon.svg?height=48" alt="" data-skill="Node.js" style="width:16px;height:17px;object-fit:contain;" loading="lazy">Node.js</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/flask.svg?height=48" alt="" data-skill="Flask" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Flask</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/laravel.svg?height=48" alt="" data-skill="Laravel" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Laravel</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/symfony.svg?height=48" alt="" data-skill="Symfony" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Symfony</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/html-5.svg?height=48" alt="" data-skill="HTML" style="width:15px;height:17px;object-fit:contain;" loading="lazy">HTML</span>
-            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/css-3.svg?height=48" alt="" data-skill="CSS" style="width:15px;height:17px;object-fit:contain;" loading="lazy">CSS</span>
           </div>
         </div>
 
@@ -877,9 +883,24 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
           <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_cloud">Cloud &amp; Tools</h3>
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/aws.svg?height=48" alt="" data-skill="AWS" style="width:21px;height:14px;object-fit:contain;" loading="lazy">AWS</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/microsoft-azure.svg?height=48" alt="" data-skill="Azure" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Azure</span>
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/google-cloud.svg?height=48" alt="" data-skill="Google Cloud" style="width:19px;height:16px;object-fit:contain;" loading="lazy">Google Cloud</span>
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/git-icon.svg?height=48" alt="" data-skill="Git" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Git</span>
             <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/docker-icon.svg?height=48" alt="" data-skill="Docker" style="width:19px;height:15px;object-fit:contain;" loading="lazy">Docker</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/fastapi-icon.svg?height=48" alt="" data-skill="FastAPI" style="width:17px;height:17px;object-fit:contain;" loading="lazy">FastAPI</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surfA),var(--surfB));padding:26px 26px 30px;transition:border-color .3s,transform .3s,box-shadow .3s;" style-hover="border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 34px var(--shadow);">
+          <h3 style="font-family:var(--disp);font-weight:600;font-size:21px;letter-spacing:-.3px;margin:0 0 20px;" data-i18n="sk_web">Web Development</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/react.svg?height=48" alt="" data-skill="React" style="width:18px;height:17px;object-fit:contain;" loading="lazy">React</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/nodejs-icon.svg?height=48" alt="" data-skill="Node.js" style="width:16px;height:17px;object-fit:contain;" loading="lazy">Node.js</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/flask.svg?height=48" alt="" data-skill="Flask" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Flask</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/laravel.svg?height=48" alt="" data-skill="Laravel" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Laravel</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/symfony.svg?height=48" alt="" data-skill="Symfony" style="width:17px;height:17px;object-fit:contain;" loading="lazy">Symfony</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/html-5.svg?height=48" alt="" data-skill="HTML" style="width:15px;height:17px;object-fit:contain;" loading="lazy">HTML</span>
+            <span style="display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid var(--border);border-radius:100px;background:var(--panel2);white-space:nowrap;font-size:14px;color:var(--txt2);box-shadow:0 1px 2px var(--shadow);transition:border-color .25s,transform .25s;" style-hover="border-color:var(--accent);transform:translateY(-2px);"><img src="https://api.iconify.design/logos/css-3.svg?height=48" alt="" data-skill="CSS" style="width:15px;height:17px;object-fit:contain;" loading="lazy">CSS</span>
           </div>
         </div>
 
@@ -944,7 +965,7 @@ if (!customElements.get('skills-field')) customElements.define('skills-field', S
 
     <footer style="padding:30px 0 50px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);">
       <span style="font-family:var(--mono);font-size:12px;color:var(--faint);">@ Built with passion by Oussama</span>
-      <span style="font-family:var(--mono);font-size:12px;color:var(--faint);">Data &amp; AI Engineer · MIAGE IDP</span>
+      <span style="font-family:var(--mono);font-size:12px;color:var(--faint);">Data Analyst · MIAGE IDP</span>
     </footer>
 
   </main>
@@ -981,22 +1002,23 @@ class Component extends DCLogic {
       tile_degree_val: "Master · MIAGE Data Engineering & Protection",
       tile_base: "BASE",
       about_h: "About",
-      about_p: "I'm a <strong style=\"color:var(--txt);font-weight:600;\">Data & AI Engineer</strong>, trained in <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Data Engineering & Protection) at Université Paul Sabatier in Toulouse. What I love most is turning raw, messy data into something people can actually use — building pipelines, modeling data, and designing dashboards that answer real questions. I'm just as passionate about generative AI: building products on top of LLMs, from RAG systems and AI agents to intelligent assistants grounded in real data. And I care about clarity, rigor, and the protection of the data I work with.",
+      about_p: "I'm a <strong style=\"color:var(--txt);font-weight:600;\">Data Analyst</strong>, trained in <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Data Engineering & Protection) at Université Paul Sabatier in Toulouse. What I love most is turning raw, messy data into something people can actually use — building pipelines, modeling data, and designing dashboards that answer real questions. I'm just as passionate about generative AI: building products on top of LLMs, from RAG systems and AI agents to intelligent assistants grounded in real data. And I care about clarity, rigor, and the protection of the data I work with.",
       about_f1: "Based in <span style=\"color:var(--txt);\">Toulouse</span>",
       about_f2: "Open to relocate <span style=\"color:var(--txt);\">across France</span>",
       about_f3: "Looking for a <span style=\"color:var(--txt);\">full-time role (CDI)</span>",
       form1_sub: "Data Engineering & Protection",
       form1_date: "Sep 2024 — Aug 2026",
+      form1_courses: "Courses: Data Science, Data Engineering, Machine Learning, Big Data, Gen AI, Cloud & DevOps, agile project management, data governance",
       form2_sub: "Computer Science",
       form2_date: "Sep 2022 — Aug 2024",
       exp_h: "Where I've worked",
       exp1_date: "Sep 2024 — Aug 2026",
       exp1_sub: "Wewise · Toulouse, France",
-      exp1_b1: "Built and maintained Power BI dashboards used daily by business teams",
-      exp1_b2: "Developed SQL and Python pipelines to collect, clean and model data from multiple sources",
-      exp1_b3: "Automated recurring reporting, saving hours of manual work every week",
-      exp1_b4: "Managed the company ERP and its database, including bug fixes and corrections",
-      exp1_t6: "AI agents",
+      exp1_b1: "Translated the needs of 4 business departments (sales, purchasing, logistics, management) into around thirty KPIs, computed from ERP data",
+      exp1_b2: "Designed 8 Power BI dashboards used every week by around forty employees, on a 15-table star schema with 60+ DAX measures",
+      exp1_b3: "Made 100,000+ rows from the ERP and business Excel files reliable with SQL Server queries and Python scripts (pandas, numpy), fixing ~4% duplicates and inconsistencies",
+      exp1_b4: "Cut report refresh time from 15 to 4 min and model size by 35% (DAX and Power Query optimisation), and automated 5 recurring tasks in VBA, saving about 6 hours of manual work a week",
+      exp1_b5: "Trained around thirty users, documented the KPIs and set up 6 RLS security roles to manage access rights",
       proj_h: "Projects",
       proj_note: "// pick a project · filter by domain · every one is live",
       proj_demo: "Live demo",
@@ -1009,14 +1031,15 @@ class Component extends DCLogic {
       pj_ml: "Machine Learning",
       pj_bi: "Analytics & BI",
       skills_h: "Skills",
-      skills_note: "// programming · ai & ml · databases · web · data & bi · cloud",
+      skills_note: "// programming · data engineering · ai & ml · databases · data & bi · cloud · web",
       sk_prog: "Programming",
+      sk_de: "Data Engineering",
       sk_ai: "AI & ML",
       sk_agents: "AI agents",
       sk_db: "Databases",
       sk_web: "Web Development",
       sk_bi: "Data & BI",
-      sk_cloud: "Cloud & Tools",
+      sk_cloud: "Cloud & DevOps",
       cat_lang: "LANGUAGES",
       cat_db: "DATABASES",
       cat_web: "WEB DEVELOPMENT",
@@ -1060,22 +1083,23 @@ class Component extends DCLogic {
       tile_degree_val: "Master · MIAGE Ingénierie des données et protection",
       tile_base: "LIEU",
       about_h: "À propos",
-      about_p: "Je suis <strong style=\"color:var(--txt);font-weight:600;\">Ingénieur Data & IA</strong>, formé en <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Ingénierie des Données et Protection) à l'Université Paul Sabatier de Toulouse. Ce que j'aime le plus, c'est transformer des données brutes et désordonnées en quelque chose de réellement utile — construire des pipelines, modéliser les données, concevoir des dashboards qui répondent à de vraies questions. Je suis tout aussi passionné par l'IA générative : créer des produits autour des LLMs, des systèmes RAG et agents IA jusqu'aux assistants intelligents ancrés dans des données réelles. Le tout avec une exigence de clarté, de rigueur et de protection des données que je manipule.",
+      about_p: "Je suis <strong style=\"color:var(--txt);font-weight:600;\">Data Analyst</strong>, formé en <strong style=\"color:var(--txt);font-weight:600;\">MIAGE IDP</strong> (Ingénierie des Données et Protection) à l'Université Paul Sabatier de Toulouse. Ce que j'aime le plus, c'est transformer des données brutes et désordonnées en quelque chose de réellement utile — construire des pipelines, modéliser les données, concevoir des dashboards qui répondent à de vraies questions. Je suis tout aussi passionné par l'IA générative : créer des produits autour des LLMs, des systèmes RAG et agents IA jusqu'aux assistants intelligents ancrés dans des données réelles. Le tout avec une exigence de clarté, de rigueur et de protection des données que je manipule.",
       about_f1: "Basé à <span style=\"color:var(--txt);\">Toulouse</span>",
       about_f2: "Ouvert à la mobilité <span style=\"color:var(--txt);\">partout en France</span>",
       about_f3: "À la recherche d'un <span style=\"color:var(--txt);\">CDI</span>",
       form1_sub: "Ingénierie des Données et Protection",
       form1_date: "Sep. 2024 — Août 2026",
+      form1_courses: "Cours : Data Science, Data Engineering, Machine Learning, Big Data, Gen AI, Cloud & DevOps, gestion de projet agile, gouvernance des données",
       form2_sub: "Informatique",
       form2_date: "Sep. 2022 — Août 2024",
       exp_h: "Expérience",
       exp1_date: "Sep. 2024 — Août 2026",
       exp1_sub: "Wewise · Toulouse, France",
-      exp1_b1: "Conception et maintenance de dashboards Power BI utilisés au quotidien par les équipes métier",
-      exp1_b2: "Développement de pipelines SQL et Python pour collecter, nettoyer et modéliser des données multi-sources",
-      exp1_b3: "Automatisation du reporting récurrent : plusieurs heures de travail manuel économisées chaque semaine",
-      exp1_b4: "Gestion de l'ERP de l'entreprise et de sa base de données, avec correction des bugs",
-      exp1_t6: "Agents IA",
+      exp1_b1: "Traduit les besoins de 4 services métiers (ventes, achats, logistique, direction) en une trentaine de KPI de pilotage, calculés à partir des données de l'ERP",
+      exp1_b2: "Conçu 8 tableaux de bord Power BI utilisés chaque semaine par une quarantaine de collaborateurs, sur un modèle en étoile de 15 tables et plus de 60 mesures DAX",
+      exp1_b3: "Fiabilisé plus de 100 000 lignes issues de l'ERP et des fichiers Excel métiers, à l'aide de requêtes SQL Server et de scripts Python (pandas, numpy), avec ~4 % de doublons et d'incohérences corrigés",
+      exp1_b4: "Réduit le temps d'actualisation des rapports de 15 à 4 min et la taille du modèle de 35 % (optimisation DAX et Power Query), et automatisé 5 traitements récurrents en VBA, soit environ 6 h de travail manuel économisées par semaine",
+      exp1_b5: "Formé une trentaine d'utilisateurs, documenté les indicateurs et mis en place 6 profils de sécurité RLS pour gérer les droits d'accès",
       proj_h: "Projets",
       proj_note: "// choisissez un projet · filtrez par domaine · tous sont en ligne",
       proj_demo: "Voir la démo",
@@ -1088,14 +1112,15 @@ class Component extends DCLogic {
       pj_ml: "Machine Learning",
       pj_bi: "Analyse & BI",
       skills_h: "Compétences",
-      skills_note: "// programmation · ia & ml · bases de données · web · data & bi · cloud",
+      skills_note: "// programmation · data engineering · ia & ml · bases de données · data & bi · cloud · web",
       sk_prog: "Programmation",
+      sk_de: "Data Engineering",
       sk_ai: "IA & ML",
       sk_agents: "Agents IA",
       sk_db: "Bases de données",
       sk_web: "Développement web",
       sk_bi: "Data & BI",
-      sk_cloud: "Cloud & Outils",
+      sk_cloud: "Cloud & DevOps",
       cat_lang: "LANGAGES",
       cat_db: "BASES DE DONNÉES",
       cat_web: "DÉVELOPPEMENT WEB",
@@ -1469,7 +1494,7 @@ class Component extends DCLogic {
   termLines(lang) {
     return lang === "fr" ? [
       { t: "cmd", s: "whoami" },
-      { t: "out", s: "Oussama Essalehi · Ingénieur Data & IA" },
+      { t: "out", s: "Oussama Essalehi · Data Analyst" },
       { t: "cmd", s: "cat formation.txt" },
       { t: "out", s: "MIAGE IDP · Ingénierie des Données et Protection · Université Paul Sabatier, Toulouse" },
       { t: "cmd", s: "./ce_que_j_aime.sh" },
@@ -1481,7 +1506,7 @@ class Component extends DCLogic {
       { t: "ok", s: "open_to_work = true" }
     ] : [
       { t: "cmd", s: "whoami" },
-      { t: "out", s: "Oussama Essalehi · Data & AI Engineer" },
+      { t: "out", s: "Oussama Essalehi · Data Analyst" },
       { t: "cmd", s: "cat education.txt" },
       { t: "out", s: "MIAGE IDP · Data Engineering & Protection · Université Paul Sabatier, Toulouse" },
       { t: "cmd", s: "./what_i_love.sh" },
