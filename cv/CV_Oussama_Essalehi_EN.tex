@@ -1,0 +1,156 @@
+% English version of the CV (same layout as the French one). Build: pdflatex CV_Oussama_Essalehi_EN.tex
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{tikz}
+
+\definecolor{linkblue}{RGB}{26,95,180}
+\newcommand{\blue}[1]{\textcolor{linkblue}{#1}}
+\newcommand{\link}[2]{\href{#1}{\blue{#2}}}
+
+% small chain icon, as in the French CV
+\newcommand{\chain}{\tikz[baseline=-0.25ex, line width=0.4pt, linkblue, rotate=40]{
+  \draw[rounded corners=0.8pt] (0,0) rectangle (0.14,0.07);
+  \draw[rounded corners=0.8pt] (0.085,0) rectangle (0.225,0.07);}}
+\newcommand{\projlink}[2]{\href{#1}{\blue{\chain\,\textsc{#2}}}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-5pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-2pt}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{#3} & \textit{#4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{3pt}\item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      #1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, itemsep=0pt, topsep=2pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\fontsize{26}{30}\selectfont Oussama Essalehi} \\ \vspace{1pt}
+    {\large\scshape\blue{Data Analyst}} \\ \vspace{3pt}
+    \small +33 7 52 07 31 00 $|$
+    \link{mailto:oussama.essalehi@gmail.com}{oussama.essalehi@gmail.com} $|$
+    \link{https://linkedin.com/in/oussama-essalehi}{linkedin.com/oussama-essalehi} $|$
+    \link{https://github.com/Oussama-essalehi}{github.com/Oussama-essalehi} $|$ \\
+    \link{https://oussama-essalehi.dev}{oussama-essalehi.dev} $|$ Toulouse, France
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Université Toulouse III -- Paul Sabatier}{Sept. 2024 -- Aug. 2026}
+      {Master's in MIAGE -- Data Engineering and Protection (IDP)}{Toulouse, France}
+      \vspace{1pt}
+      \item \small \textbf{Courses:} \blue{\textit{Data Science, Data Engineering, Machine Learning, Big Data, Gen AI, Cloud \& DevOps, Agile Project Management, Data Governance}}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Data Analyst}{Sept. 2024 -- Aug. 2026}
+      {Wewise}{Toulouse, France}
+      \resumeItemListStart
+        \resumeItem{Translated the needs of 4 business departments (sales, purchasing, logistics, management) into around thirty management KPIs, computed from ERP data.}
+        \resumeItem{Designed 8 Power BI dashboards used every week by about forty employees, on a 15-table star schema with 60+ DAX measures.}
+        \resumeItem{Cleaned and validated 100,000+ rows from the ERP and business Excel files with SQL Server queries and Python scripts (pandas, numpy), correcting $\sim$4\% duplicates and inconsistencies.}
+        \resumeItem{Cut report refresh time from 15 to 4 min and model size by 35\% (DAX and Power Query optimisation), and automated 5 recurring tasks in VBA, saving about 6 hours of manual work per week.}
+        \resumeItem{Trained around thirty users, documented the KPIs and set up 6 RLS security roles to manage access rights.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{Batch \& Streaming E-commerce Data Platform} \blue{$|$} \projlink{https://ecommerce-data-platform-seven.vercel.app}{Demo} \blue{$|$} \projlink{https://github.com/Oussama-essalehi/ecommerce-data-platform}{Code} \\ \blue{\textit{Python, Kafka, Spark, Airflow, dbt, PostgreSQL, Great Expectations, Docker}}}{}
+          \resumeItemListStart
+            \resumeItem{Designed batch (API, CSV) and streaming (orders through Kafka) ingestion pipelines, orchestrated by Airflow with retries and alerts.}
+            \resumeItem{Structured a Data Lake in a medallion architecture (bronze, silver, gold) on Delta Lake, then modelled a star-schema Data Warehouse with dbt.}
+            \resumeItem{Set up automated data quality checks (Great Expectations, dbt tests): completeness, uniqueness and freshness, with anomaly tracking.}
+            \resumeItem{Delivered data marts for analytics (Power BI) and data science (features for demand forecasting).}
+            \resumeItem{Documented the pipelines, lineage and schemas with dbt docs, and containerised the whole stack with Docker Compose.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{VéloScope Toulouse -- Bike-Sharing Analysis and Forecasting} \blue{$|$} \projlink{https://toulouse-mobilite.streamlit.app}{Demo} \blue{$|$} \projlink{https://github.com/Oussama-essalehi/mobilite-urbaine-databricks}{Code} \\ \blue{\textit{Databricks, PySpark, Delta Lake, MLflow, scikit-learn, Streamlit, Power BI}}}{}
+          \resumeItemListStart
+            \resumeItem{Continuous collection of the status of the 450 VélôToulouse stations (\textsc{GBFS} feed) and of the weather, through scheduled Databricks jobs.}
+            \resumeItem{Delta Lake lakehouse in a medallion architecture (bronze, silver, gold) in PySpark and Spark SQL, quarantining inconsistent rows and alerting on the rejection rate.}
+            \resumeItem{Rebuilt departures and arrivals from stock changes between two readings, as the APIs only publish the status of each station.}
+            \resumeItem{Segmented the stations by clustering and forecast demand 24 h ahead with gradient boosting, benchmarked against a simple baseline and tracked in MLflow.}
+            \resumeItem{Streamlit app (live map, forecasts, recommended rebalancing) and a Power BI dashboard in DirectQuery.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Immoscope France -- French Housing Market 2021--2025} \blue{$|$} \projlink{https://immoscope-france.vercel.app}{Demo} \blue{$|$} \projlink{https://github.com/Oussama-essalehi/immoscope-france}{Code} \\ \blue{\textit{Python (pandas, SciPy), PostgreSQL, SQL, Docker, Power BI (DAX), React, Plotly}}}{}
+          \resumeItemListStart
+            \resumeItem{Python pipeline downloading and cleaning 385 public DVF files (18M rows) down to 3.8M reliable sales, with automated tests.}
+            \resumeItem{Star-schema model in PostgreSQL (Docker) and SQL analysis queries: window functions, medians, \textsc{grouping sets}.}
+            \resumeItem{Statistical analysis of the gaps between cities (Mann-Whitney tests, Bonferroni correction, effect sizes), with SQL and Python medians cross-checked.}
+            \resumeItem{Delivered as a 4-page Power BI dashboard (DAX measures, budget simulator) and a bilingual React website with an interactive map.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0in, label={}]
+    {\item{
+     \textbf{Programming:} Python (pandas, numpy), SQL, Java, JavaScript \\
+     \textbf{Data Engineering:} Spark / PySpark, Kafka, Airflow, dbt, Delta Lake, Databricks, ETL / ELT, Great Expectations \\
+     \textbf{Cloud \& DevOps:} AWS, Azure, Docker, Git, FastAPI \\
+     \textbf{AI \& LLM:} scikit-learn, MLflow, Hugging Face, LangChain, RAG, LLM APIs, Streamlit \\
+     \textbf{Databases:} PostgreSQL, SQL Server, MySQL, MongoDB, Oracle \\
+     \textbf{Visualisation \& BI:} Power BI (DAX), Power Query, Excel (VBA), Tableau \\
+     \textbf{Languages:} French, English
+    }}
+ \end{itemize}
+
+%-----------INTERESTS-----------
+\section{Interests}
+ \begin{itemize}[leftmargin=0in, label={}]
+    {\item{Chess, poker and strategy games $\cdot$ Running and fitness.}}
+ \end{itemize}
+
+\end{document}
